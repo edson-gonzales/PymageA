@@ -1,4 +1,4 @@
-class Image:
+class image_file:
 	file_name=''
 	file_size=''
 	file_owner=''
@@ -9,7 +9,7 @@ class Image:
 
 
 	def __init__(self):
-		self.file_path="\Users'\'" #root path by default-windows
+		self.file_path="" #root path by default-windows
 
 	def get_name(self):
 		return self.file_name
