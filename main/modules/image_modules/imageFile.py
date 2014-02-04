@@ -1,6 +1,6 @@
 import imghdr
 import os
-class image_file:
+class ImageFile:
 	file_name=''
 	file_size=''
 	file_owner=''
@@ -14,11 +14,22 @@ class image_file:
 		self.file_path="" #root path by default-windows
 
 	def set_image_values(self,full_path_file_image,full_name_file_image): 
-		self.set_path(os.path.abspath(full_path_file_image))
-		split_name_image=os.path.splitext(full_name_file_image)
-		self.set_name(split_name_image[0])
-		self.set_type(split_name_image[1].translate(None,'.'))#remove . from extension file
-
+		if full_path_file_image.endswith('/')==False:
+			full_path_file_image=full_path_file_image+'/'
+		full_path_image=full_path_file_image+full_name_file_image
+		if os.path.isfile(full_path_image):#file exist		
+			split_name_image=os.path.splitext(full_name_file_image)	
+			file_name_image=split_name_image[0]
+			file_type_image=split_name_image[1].translate(None,'.')#remove . from extension file
+			if (self.validate_type_image(file_type_image)): #the type is valid to create an object imagefile
+				self.set_path(os.path.abspath(full_path_file_image))
+				self.set_name(file_name_image)
+				self.set_type(file_type_image)
+				info_file_image=os.stat(full_path_image)
+				self.file_owner=info_file_image.st_uid #uid owner of file imaeg
+				return True
+			return False
+		return False
 
 	def get_complete_image_with_type(self):
 		return (self.get_name()+"."+self.get_type())
@@ -62,14 +73,14 @@ class image_file:
 		return self.file_path
 
 	def get_full_file_name(self):
-		return self.file_path+"\\"+self.file_name+"."+self.file_type
+		return self.file_path+"/"+self.file_name+"."+self.file_type
 
-	def is_image_PNG(self):
-		if((imghdr.what(self.get_full_file_name()))).upper()=="PNG":
+
+	def validate_type_image(self,type_file):
+		image_file_type=['JPG','BMP','PNG']
+		if (type_file.upper() in image_file_type):
 			return True
-		else:
-			return False
-
+		return False
 	
 
 
