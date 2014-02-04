@@ -18,19 +18,24 @@ class ListImages():
 		return it_is
 			
 		
-	def get_all_images_from_path(self, given_path):
+	def get_all_images_from_directory(self, size, list_of_images, list_of_directories):
 		"""Add all images contained in directories and subdirectories to a list and returns the list"""
 		
-		list_of_directories = self.get_all_nested_directories(given_path) 
-		list_of_images = []
-		for directory in list_of_directories:
-			list_of_files = os.listdir(directory)
+		#list_of_directories = self.get_all_nested_directories(given_path) 
+		#list_of_images = []
+		next_folder_in_array = len(list_of_directories) - size
+		if next_folder_in_array >= len(list_of_directories):
+			return list_of_images
+		else:
+			list_of_files = os.listdir(list_of_directories[next_folder_in_array])
+			size = size - 1
 			for file_name in list_of_files:
 				file_base_name, file_extension = os.path.splitext(file_name)
 				if self.is_file_in_image_scope(file_extension):
 					list_of_images.append(file_name)
+					
+			return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
 		
-		return list_of_images
 	
 	def get_all_nested_directories(self, given_path):
 		""" Retrieves all nested directories from a path and return them in a list"""
@@ -41,6 +46,4 @@ class ListImages():
 		return list_of_directories_full_path
 	
 	
-			
-				
 		
