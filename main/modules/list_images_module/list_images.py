@@ -14,15 +14,18 @@ class ListImages():
 		"""Verify extension is contained in files supported and return a True/False 
 		
 		Keyword arguments:
-		extension -- Given extension of a file
+		extension -- A string  value that represents the extension of a file. This can be '.jpg' or '.txt'		
+		
+		Returned value:
+		is_supported_format -- Boolean value. True if extension is in the pre-defined list of supported formats
 		
 		"""
 		
-		it_is = False
+		is_supported_format = False
 		if extension in self.image_file_types:
-			it_is = True
+			is_supported_format = True
 		
-		return it_is
+		return is_supported_format
 		
 		
 	def get_all_images_from_directory(self, size, list_of_images, list_of_directories):
@@ -30,12 +33,17 @@ class ListImages():
 			It receives a list of directories and in a recursive way list all images contained on those.
 			
 		Keyword arguments:
-		size -- The current size of the elements not visited yet. 
+		size -- Int value that represents the current size of the elements not visited yet. 
 				Initial value will be the same as the lenght of the list of directories received 
+				
 		list_of_images -- The list of images collected from the directories. 
 							This will grow with each recursive call to the method
+							
 		list_of_directories -- The list of all directories where it needs to look for. 
-								This list will be the same always. 
+								This list will be the same always.
+		
+		
+		Returned value: The list of images found in the list_of_directories specified
 		
 		"""
 		
@@ -50,13 +58,28 @@ class ListImages():
 				if self.is_file_in_image_scope(file_extension):
 					list_of_images.append(file_name)
 					
-			return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
+		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
 		
 	def get_all_nested_directories(self, given_path):
 		""" Retrieves all nested directories from a path and return them in a list
 			
 		Keyword arguments:
-		given_path -- The top level folder we want to extract the list of folders.
+		given_path -- String value that represent the absolute path of the top level folder we want to 
+					extract the list of folders. i.e.: If we have the below tree
+					D:/
+						/images
+							/personal images
+								/photos
+									/draws
+					If we want images from personal images and nested directoriesit would be 'D:/images/personal images'
+		
+		Returned value:
+		list_of_directories_full_path -- A list that contains the full path of each directory found
+										This list also includes the top level path given as argument.
+									With above example we will have the below list returnes
+									list_of_directories_full_path = ['D:/images/personal images',
+																	'D:/images/personal images/photos',
+																	'D:/images/personal images/photos/draws',
 		
 		"""
 		
