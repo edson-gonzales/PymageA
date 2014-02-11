@@ -77,22 +77,25 @@ class ListImages():
 								/photos
 									/draws
 					If we want images from personal images and nested directoriesit would be 'D:/images/personal images'
-		
+					
+					If the given_path is an empty string "", it will return all the images found on a specific images directory from  the user
+					This specifig images directory would be read from a configuration file since it will not be the same on the environment the application runs
+					
 		Returned value:
 		list_of_directories_full_path -- A list that contains the full path of each directory found
 										This list also includes the top level path given as argument.
-									With above example we will have the below list returnes
-									list_of_directories_full_path = ['D:/images/personal images',
+										With above example we will have the below list returnes
+										list_of_directories_full_path = ['D:/images/personal images',
 																	'D:/images/personal images/photos',
 																	'D:/images/personal images/photos/draws',
 		
 		"""
 		
-		if (given_path == ''):
-			given_path = os.path.expanduser('~')
-		
-		print given_path
-		
+		# This should be moved to main class when we have it
+		if (given_path == ""):
+			picture_folder = 'Pictures' # this need to be read from a configuration file
+			given_path = os.path.abspath(os.path.expanduser('~') + "/" + picture_folder)
+			
 		list_of_directories_full_path = []
 		for root, dirs, files in os.walk(given_path):
 			list_of_directories_full_path.append(root)
