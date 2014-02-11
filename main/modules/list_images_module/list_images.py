@@ -1,4 +1,9 @@
 import os
+import sys
+import os.path
+
+#sys.path.append("..")
+from main.modules.searcher_module.searcher import Searcher
 
 class ListImages():
 	"""Class ListImages handles the files retrieved from a given path and add them to an array"""
@@ -94,5 +99,14 @@ class ListImages():
 		
 		return list_of_directories_full_path
 	
+	def search_images_in_path(self, path, search_type, size, list_of_images, list_of_directories):
+		"""Defines the path, the strategy where the search will be performed and returns all the images
+		   duplicated in a list
+		
+		"""
 	
+		list_of_images_from_path = self.get_all_images_from_directory(size, list_of_images, list_of_directories)
+		searcher = Searcher(search_type);
+		list_of_duplicated_images = searcher.search_duplicates(list_of_images_from_path);
+		return list_of_duplicated_images;
 		
