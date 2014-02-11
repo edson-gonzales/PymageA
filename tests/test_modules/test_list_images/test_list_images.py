@@ -63,6 +63,16 @@ class TestListImages(unittest.TestCase):
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		self.assertItemsEqual(list_of_images_expected, list_of_images_obtained)
 	
-		
+	def test_directories_from_user_are_returned_if_empty_path(self):
+		list_of_images = []
+		self.test_path = ''
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		print size_of_list_of_folders
+		#list_of_images_expected = ['Image1.jpg','Image2.png','Image3.bmp']
+		#list_of_images_obtained = self.list_images.get_all_images_from_directory \
+								#(size_of_list_of_folders, list_of_images, self.list_of_directories)
+		#self.assertItemsEqual(list_of_images_expected, list_of_images_obtained)
+
 if __name__ == '__main__':
 	unittest.main()

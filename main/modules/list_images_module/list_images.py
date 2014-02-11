@@ -83,6 +83,11 @@ class ListImages():
 		
 		"""
 		
+		if (given_path == ''):
+			given_path = os.path.expanduser('~')
+		
+		print given_path
+		
 		list_of_directories_full_path = []
 		for root, dirs, files in os.walk(given_path):
 			list_of_directories_full_path.append(root)
