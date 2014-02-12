@@ -105,6 +105,18 @@ class ListImages():
 	def search_images_in_path(self, path, search_type, size, list_of_images, list_of_directories):
 		"""Defines the path, the strategy where the search will be performed and returns all the images
 		   duplicated in a list
+		   
+		Keyword arguments:
+		path -- The path where we are going to look for images duplicates
+		search_type -- The criteria we are going to use to perform the duplicates search. This will be encapsulated in an Object
+		
+		Below parameters are needed to perform the recursive search within nested directories:
+		size -- The size of the list of directories
+		list_of_images -- The list of images that will be appended on each method run
+		list_of_directories -- The list of directories. This will be the same on all runs
+		
+		Returned values:
+		list_of_duplicated_images -- The list of images duplicated
 		
 		"""
 	
