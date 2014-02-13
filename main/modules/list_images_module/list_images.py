@@ -31,7 +31,28 @@ class ListImages():
 			is_supported_format = True
 		
 		return is_supported_format
+	
+	def validate_path(self, given_path):
+		"""Verify if given path is a empty string. If so returns the home user directory, if not returns the given path 
 		
+		Keyword arguments:
+		given_path -- A string that represents the path to validate
+		
+		Returned value:
+		Path -- If empty, returns the built path, if not it returns the same given path
+		
+		"""
+		if given_path == "":
+			return self.build_user_home_directory()
+		else:
+			return given_path
+	
+	def build_user_home_directory(self):
+		""" It builds the path of the user directory that contains the images from the user and return that path
+		
+		Returned value: The full path to the user pictures folder
+		"""
+		return os.path.expanduser('~') + "/" + "Pictures"
 		
 	def get_all_images_from_directory(self, size, list_of_images, list_of_directories):
 		"""Add all images contained in the list of directories received to a list and and returns that list.
@@ -91,13 +112,8 @@ class ListImages():
 		
 		"""
 		
-		# This should be moved to main class when we have it
-		if (given_path == ""):
-			picture_folder = 'Pictures' # this need to be read from a configuration file
-			given_path = os.path.abspath(os.path.expanduser('~') + "/" + picture_folder)
-			
 		list_of_directories_full_path = []
-		for root, dirs, files in os.walk(given_path):
+		for root, dirs, files in os.walk(self.validate_path(given_path)):
 			list_of_directories_full_path.append(root)
 		
 		return list_of_directories_full_path

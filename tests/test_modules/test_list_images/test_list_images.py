@@ -69,7 +69,7 @@ class TestListImages(unittest.TestCase):
 	def test_directories_from_user_are_returned_if_empty_path(self):
 		list_of_images = []
 		path_of_image_to_copy_to_user_home = os.path.abspath(self.test_path + "/images_for_unittest/Image1.jpg")
-		user_home_images_directory_path = os.path.abspath(os.path.expanduser('~') + "/" + "Pictures")
+		user_home_images_directory_path = os.path.expanduser('~') + "/" + "Pictures"
 		# If there is some permissions error
 		try:
 			shutil.copy(path_of_image_to_copy_to_user_home, user_home_images_directory_path)
