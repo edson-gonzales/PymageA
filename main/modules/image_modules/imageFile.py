@@ -26,75 +26,64 @@ class ImageFile():
 		
 
 	def verify_image_values(self, full_path_file_image, full_name_file_image): 
-		"""Verify the values to imageFile if the file image and path are valid then the object ImageFile is created
-		 return a True/False 
-		
+		"""verify if path and name are valid and set the values in object ImageFile 
+		 	
 		Keyword arguments:
 		
 		full_path_file_image -- path of image
 		full_name_file_image -- file name image
+
+		Return Value:
+		True -- if the values in object were set correctly 
+		False -- If the object is not a image file and the values are not set
 		"""
 		if full_path_file_image.endswith('/') == False and full_path_file_image.endswith('\\') == False:
 			full_path_file_image = full_path_file_image + '/'
 		if (self.is_valid_image(full_path_file_image, full_name_file_image) == True):
+
 			split_name_image = os.path.splitext(full_name_file_image)	
 			file_name_image = split_name_image[0]
 			file_type_image = split_name_image[1].translate(None, '.')#remove . from extension file
-			self.set_path(os.path.abspath(full_path_file_image))
-			self.set_name(file_name_image)
-			self.set_type(file_type_image)
-			image_full_path_name = full_path_file_image + full_name_file_image
-			newimage = Image.open(image_full_path_name)
-			self.set_size_pixels(newimage.size[1], newimage.size[0])
+			self.file_path = os.path.abspath(full_path_file_image)
+			self.file_name = file_name_image
+			self.file_type = file_type_image
+			image_full_path_name = os.path.abspath(full_path_file_image + full_name_file_image)
+			self.file_image_full_path = image_full_path_name
+			new_image = Image.open(image_full_path_name)
 			info_file_image = os.stat(image_full_path_name)
-			uid = info_file_image.st_uid #uid owner of file image--in progress to plaform windows
-			owner_name = uid
 			self.size_KB_image = info_file_image.st_size #size of image file
-			if (platform.system() == "Linux"):
-				self.set_name = self.get_owner_in_Linux_platorm(uid)
-				
-			if platform.system() == 'Windows' :
-				self.set_name = self.get_owner_in_Windows_platform(file_name_image, full_path_file_image, file_type_image)
-			self.file_image_full_path =full_path_file_image+file_name_image+'.'+file_type_image
+			self.set_size_pixels(new_image.size[1], new_image.size[0])
+			self.set_file_onwer(full_path_file_image, full_name_file_image)
+		
+			
 			return True
 		
 		return False
-
-	def get_owner_in_Linux_platorm (self, uid):
-		"""Return the name to specific uid in plataform Linux"""
-
-		return pwd.getpwuid(uid).pw_name
-
-	def get_owner_in_Windows_platform(self, file_name_image, full_path_file_image,ext ):
-		"""Return the owner to specific file in plataform Windows
-		Keyword arguments:
+	def set_file_onwer(self, full_path_file_image, full_name_file_image):
+		if (platform.system() == "Linux"):
+			image_full_path_name = os.path.abspath(full_path_file_image + full_name_file_image)
+			info_file_image = os.stat(image_full_path_name)
+			uid = info_file_image.st_uid
+			self.file_owner = pwd.getpwuid(uid).pw_name
+		if platform.system() == 'Windows' :
+			if full_path_file_image.endswith('/') == True or full_path_file_image.endswith('\\') == True:
+				full_path_file_image = full_path_file_image[:-1]
+			full_path_file_image = os.path.abspath(full_path_file_image)
+			mypath = os.path.dirname(os.path.abspath(__file__))
+			new_name = os.path.dirname(os.path.abspath(__file__)) + '/delete' + full_name_file_image + '.txt'
+			new_name = os.path.abspath (new_name)
+			command_windows = 'dir /q ' + full_path_file_image + '\\' + full_name_file_image + '>' + new_name
+			info_file = os.system(command_windows)
+			try:
+				file_info = open(new_name)
+				lines = file_info.readlines()
+				info_file_owner = (lines[5].rstrip("\n")).split(' ')
+				self.file_owner = (info_file_owner[len(info_file_owner)-2]).split("\\")
+				file_info.close()
+				os.remove(new_name)
+			except IOError:
+				print("File cannot open" + new_name)
 		
-
-		file_name_image --  name file image
-		file_name_image -- path where image is located
-
-		"""
-		if full_path_file_image.endswith('/') == True or full_path_file_image.endswith('\\') == True:
-			full_path_file_image = full_path_file_image[:-1]
-		
-		full_path_file_image=os.path.abspath(full_path_file_image)
-		mypath = os.path.dirname(os.path.abspath(__file__))
-		new_name = os.path.dirname(os.path.abspath(__file__))+ '/delete' + file_name_image + '.txt'
-		new_name = os.path.abspath (new_name)
-		command_windows = 'dir /q ' + full_path_file_image + '\\' + file_name_image + '.' + ext + '>' + new_name
-		info_file = os.system(command_windows)
-		owner_file = 1
-		try:
-			file_info = open(new_name)
-			lines = file_info.readlines()
-			info_file_owner = (lines[5].rstrip("\n")).split(' ')
-			owner_file = (info_file_owner[len(info_file_owner)-2]).split("\\")
-			file_info.close()
-			os.remove(new_name)
-		except IOError:
-			print("File cannot open" + new_name)
-		
-		return owner_file
 
 
 	def is_valid_image(self,full_path_file_image,full_name_file_image):
@@ -219,7 +208,7 @@ class ImageFile():
 			return True
 		return False
 	
-	def set_resizes_image(self, new_high_image, new_width_image):
+	def resize_image(self, new_high_image, new_width_image):
 		"""Modify image with new sizes in pixels if the parameters (new_width_image,new_high_image) are valid
 
 		Keyword arguments:
@@ -247,11 +236,13 @@ class ImageFile():
 		True: if the new sizes are valid and are in proper range
 		False: If the new size are not valid
 		"""
-		if ((self.min_size < new_width_image <= self.max_size) and type(new_width_image) == int) and ((self.min_size < new_high_image <= self.max_size) and type(new_high_image) == int):
+		if ((self.min_size < new_width_image <= self.max_size) and type(new_width_image) == int) and \
+			 ((self.min_size < new_high_image <= self.max_size) and type(new_high_image) == int):
+			
 			return True
 		return False
 
-	def set_rotate_image(self, angle_to_rotate):
+	def rotate_image(self, angle_to_rotate):
 		"""Modify image with new angle
 		Keyword arguments:		
 		angle_to_rotate: angle to rotate the image

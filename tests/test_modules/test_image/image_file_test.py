@@ -52,17 +52,17 @@ class TestImageFile(unittest.TestCase):
 	def test_is_valid_size_image_return_FALSE_if_any_size_is_a_decimal_number(self):
 		self.assertFalse(self.image_file_test.is_valid_size_image(12.3, 100))
 
-	def test_set_resizes_image_return_TRUE_if_image_is_resized_with_new_sizes_interger_values(self):
+	def test_resize_image_return_TRUE_if_image_is_resized_with_new_sizes_interger_values(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'T-shirt.bmp')
-		self.assertTrue(self.image_file_test.set_resizes_image(10, 10))
+		self.assertTrue(self.image_file_test.resize_image(10, 10))
 
-	def test_set_resizes_image_return_FALSE_if_image_is_not_resized_with_new_sizes_decimal_values(self):
+	def test_resize_image_return_FALSE_if_image_is_not_resized_with_new_sizes_decimal_values(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'T-shirt.bmp')	
-		self.assertFalse(self.image_file_test.set_resizes_image(10.4, 400))
+		self.assertFalse(self.image_file_test.resize_image(10.4, 400))
 
-	def test_set_resizes_image_return_FALSE_if_image_is_not_resized_with_new_sizes_negative_integer_values(self):
+	def test_resize_image_return_FALSE_if_image_is_not_resized_with_new_sizes_negative_integer_values(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'T-shirt.bmp')	
-		self.assertFalse(self.image_file_test.set_resizes_image(-10, 400))
+		self.assertFalse(self.image_file_test.resize_image(-10, 400))
 
 	def test_is_valid_angle_image_return_TRUE_if_integer_angle_is_valid(self):
 		self.assertTrue(self.image_file_test.is_valid_angle_image(10))
@@ -70,13 +70,13 @@ class TestImageFile(unittest.TestCase):
 	def test_is_valid_angle_image_return_FALSE_if_angle_with_decimal_value_is_not_valid(self):
 		self.assertFalse(self.image_file_test.is_valid_angle_image(10.3))
 
-	def test_set_rotate_image_return_TRUE_if_image_with_integer_angle_is_rotated(self):
+	def test_rotate_image_return_TRUE_if_image_with_integer_angle_is_rotated(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'equipo.png')	
-		self.assertTrue(self.image_file_test.set_rotate_image(-50))
+		self.assertTrue(self.image_file_test.rotate_image(-50))
 
-	def test_set_rotate_image_return_FALSE_if_image_is_not_rotate_with_integer_angle_out_of_range(self):
+	def test_rotate_image_return_FALSE_if_image_is_not_rotate_with_integer_angle_out_of_range(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'balon.png')	
-		self.assertFalse(self.image_file_test.set_rotate_image(182))
+		self.assertFalse(self.image_file_test.rotate_image(182))
 
 
 if __name__ == "__main__":
