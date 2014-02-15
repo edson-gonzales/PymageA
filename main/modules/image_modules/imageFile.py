@@ -58,6 +58,12 @@ class ImageFile():
 		return False
 
 	def set_file_onwer(self, full_path_file_image, full_name_file_image):
+		""" Set owner to imageFile according the platform where project is running
+
+		Keyword arguments:
+		full_path_file_image -- path were image is located
+		full_name_file_image -- file name image (with extension) 
+		"""
 		if (platform.system() == "Linux"):
 			self.set_file_owner_in_platform_linux(full_path_file_image, full_name_file_image)
 		if platform.system() == 'Windows' :
