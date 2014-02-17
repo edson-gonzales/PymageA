@@ -24,7 +24,6 @@ class ImageFile():
 		self.max_size = 1000
 		self.min_size = 1
 		
-
 	def verify_image_values(self, full_path_file_image, full_name_file_image): 
 		"""verify if path and name are valid and set the values in object ImageFile 
 		 	
@@ -133,7 +132,7 @@ class ImageFile():
 
 	def get_complete_image_with_type(self):
 		"""Return the name and extension of image"""
-		return (self.get_name() + "." + self.get_type())
+		return (self.get_file_name() + "." + self.get_file_type())
 
 	def get_full_path_with_name_image_type(self):
 		"""Return location(path) and name.extension of image"""

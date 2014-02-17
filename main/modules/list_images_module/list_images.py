@@ -57,7 +57,7 @@ class ListImages():
 		
 		Returned value: The full path to the user pictures folder
 		"""
-		return os.path.expanduser('~') + "/" + "Pictures"
+		return os.path.expanduser('~') + "/" + "Pictures/"
 		
 	def get_all_images_from_directory(self, size, list_of_images, list_of_directories):
 		"""Add all images contained in the list of directories received to a list and and returns 
@@ -88,11 +88,11 @@ class ListImages():
 			for file_name in list_of_files:
 				file_base_name, file_extension = os.path.splitext(file_name)
 				if self.is_file_in_image_scope(file_extension):
-					full_image_path = os.path.join(list_of_directories[next_folder_in_array], file_name)
-					base_image_path = os.path.dirname(full_image_path)
+					full_image_path = list_of_directories[next_folder_in_array] + "/"
 					image_object = ImageFile()
-					image_object.set_image_values(base_image_path, file_name)
-					list_of_images.append(image_object.get_complete_image_with_type())
+					image_object.verify_image_values(full_image_path, file_name)
+					print image_object.get_file_owner()
+					list_of_images.append(image_object)
 					
 		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
 		
