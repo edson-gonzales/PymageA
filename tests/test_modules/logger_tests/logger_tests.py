@@ -8,17 +8,20 @@ from main.modules.logger_module.logger import Logger
 class ListloggerTest(unittest.TestCase):
 	test_logger = ''
 	path_resources = ''
+	path_file_test = ''
 
 	def setUp(self)	:
 		file_path =''
 		self.test_logger = Logger()
-		self.path_resources = self.path_resources= os.path.dirname(os.path.abspath(__file__))+'/resources/'
-
+		self.path_resources = os.path.dirname(os.path.abspath(__file__))+'/Resources/'
+		self.path_file_test_exist = self.path_resources + 'test/test01.log'
+		self.path_file_test_does_not_exist = self.path_resources + 'test/test.log'
+		
 	def test_log_file_exist_return_FALSE_if_file_does_not_exist(self):
-		self.assertFalse(self.test_logger.log_file_exist(self.path_resources+'test/test.log'))
+		self.assertFalse(self.test_logger.log_file_exist(self.path_file_test_does_not_exist))
 		
 	def test_log_file_exist_return_TRUE_if_file_exists(self):
-		self.assertTrue(self.test_logger.log_file_exist(self.path_resources+'test/test01.log'))
+		self.assertTrue(self.test_logger.log_file_exist(self.path_file_test_exist))
 		
 	def test_set_file_path_name_is_setting_the_correct_path_and_log_name(self):
 		self.assertEquals(self.test_logger.get_file_path_name(),
