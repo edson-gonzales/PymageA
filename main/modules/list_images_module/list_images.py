@@ -3,6 +3,8 @@ import sys
 import os.path
 
 from main.modules.searcher_module.searcher import Searcher
+from main.modules.image_modules.imageFile import ImageFile
+
 
 class ListImages():
 	"""Class ListImages handles the files retrieved from a given path and add them to an array"""
@@ -86,7 +88,11 @@ class ListImages():
 			for file_name in list_of_files:
 				file_base_name, file_extension = os.path.splitext(file_name)
 				if self.is_file_in_image_scope(file_extension):
-					list_of_images.append(file_name)
+					full_image_path = os.path.join(list_of_directories[next_folder_in_array], file_name)
+					base_image_path = os.path.dirname(full_image_path)
+					image_object = ImageFile()
+					image_object.set_image_values(base_image_path, file_name)
+					list_of_images.append(image_object.get_complete_image_with_type())
 					
 		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
 		

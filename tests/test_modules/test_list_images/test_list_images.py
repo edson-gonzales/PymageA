@@ -24,7 +24,7 @@ class TestListImages(unittest.TestCase):
 		self.test_path = self.test_path + "/images_for_unittest"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
-		list_of_images_expected = ['Image1.jpg','Image2.png','Image3.bmp']
+		list_of_images_expected = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		self.assertEquals(list_of_images_expected, list_of_images_obtained)
@@ -34,7 +34,7 @@ class TestListImages(unittest.TestCase):
 		self.test_path = self.test_path + "/images2_for_unittest"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
-		list_of_images_expected = ['Image1.jpg','Image2.png','Image3.bmp']
+		list_of_images_expected = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		self.assertItemsEqual(list_of_images_expected, list_of_images_obtained)	
@@ -47,10 +47,10 @@ class TestListImages(unittest.TestCase):
 		self.test_path = self.test_path + "/images3_for_unittest"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
-		list_of_images_expected = ['Image4.jpg','Image1.jpg','Image2.png',\
-								   'Image3.bmp','Image1.jpg','Image2.png',\
-								   'Image3.bmp','Image1.jpg','Image2.png',\
-								   'Image3.bmp'\
+		list_of_images_expected = ['balon.jpg','equipo.png','T-shirt.bmp',\
+								   'balon.jpg','equipo.png','T-shirt.bmp',\
+								   'balon.jpg','equipo.png','T-shirt.bmp',\
+								   'balon.jpg'\
 									]
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
@@ -61,14 +61,14 @@ class TestListImages(unittest.TestCase):
 		self.test_path = self.test_path + "/images4_for_unit_test"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
-		list_of_images_expected = ['Image1.jpg','Image2.png','Image3.bmp']
+		list_of_images_expected = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		self.assertItemsEqual(list_of_images_expected, list_of_images_obtained)
 	
 	def test_directories_from_user_are_returned_if_empty_path(self):
 		list_of_images = []
-		path_of_image_to_copy_to_user_home = os.path.abspath(self.test_path + "/images_for_unittest/Image1.jpg")
+		path_of_image_to_copy_to_user_home = os.path.abspath(self.test_path + "/images_for_unittest/balon.jpg")
 		user_home_images_directory_path = os.path.expanduser('~') + "/" + "Pictures"
 		# If there is some permissions error
 		try:
@@ -79,7 +79,7 @@ class TestListImages(unittest.TestCase):
 		self.list_of_directories = self.list_images.get_all_nested_directories("")
 		size_of_list_of_folders = len(self.list_of_directories)
 		
-		image_expected = 'Image1.jpg'
+		image_expected = 'balon.jpg'
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
@@ -91,7 +91,7 @@ class TestListImages(unittest.TestCase):
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
 		search_type = SearchDuplicatesByName()
-		duplicated_images = ['Image1.jpg','Image2.png','Image3.bmp']
+		duplicated_images = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_to_look_for = self.list_images.search_images_in_path \
 									(self.test_path, search_type, size_of_list_of_folders, list_of_images, self.list_of_directories) 
 		
