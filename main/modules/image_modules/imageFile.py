@@ -95,7 +95,7 @@ class ImageFile():
 		mypath = os.path.dirname(os.path.abspath(__file__))
 		new_name = os.path.dirname(os.path.abspath(__file__)) + '/delete' + full_name_file_image + '.txt'
 		new_name = os.path.abspath (new_name)
-		command_windows = 'dir /q ' + full_path_file_image + '\\' + full_name_file_image + '>' + new_name
+		command_windows = 'dir /q "'  + full_path_file_image + '\\' + full_name_file_image + '">' + '"'+new_name+'"'
 		info_file = os.system(command_windows)
 		try:
 			file_info = open(new_name)

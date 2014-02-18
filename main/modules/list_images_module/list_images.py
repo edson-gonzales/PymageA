@@ -91,7 +91,6 @@ class ListImages():
 					full_image_path = list_of_directories[next_folder_in_array] + "/"
 					image_object = ImageFile()
 					image_object.verify_image_values(full_image_path, file_name)
-					print image_object.get_file_owner()
 					list_of_images.append(image_object)
 					
 		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
