@@ -5,4 +5,3 @@ class GeneralSearch():
 			
 		"""
 		raise Exception
-		
