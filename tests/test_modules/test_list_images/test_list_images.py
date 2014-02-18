@@ -27,7 +27,8 @@ class TestListImages(unittest.TestCase):
 			for image_object in list_of_images_obtained:
 				if image_object.get_complete_image_with_type() not in list_of_images_expected:
 					are_equal = False	
-					self.message = "Not equal. " + image_object.get_complete_image_with_type() + " not in " + ', '.join(list_of_images_expected)
+					self.message = "Not equal. " + image_object.get_complete_image_with_type() + " \
+									not in " + ', '.join(list_of_images_expected)
 		else:
 			are_equal = False
 			self.message("Not equal. The length of lists is different")
@@ -109,7 +110,8 @@ class TestListImages(unittest.TestCase):
 		
 		image_expected = ImageFile()
 		image_expected.verify_image_values(user_home_images_directory_path,'balon.jpg')
-		list_of_images_obtained = self.list_images.get_all_images_from_directory(size_of_list_of_folders, list_of_images, self.list_of_directories)
+		list_of_images_obtained = self.list_images.get_all_images_from_directory\
+								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
 		if self.is_item_in_list(image_expected, list_of_images_obtained) == False:
 			self.fail(self.message)
@@ -122,7 +124,8 @@ class TestListImages(unittest.TestCase):
 		search_type = SearchDuplicatesByName()
 		duplicated_images = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_to_look_for = self.list_images.search_images_in_path \
-									(self.test_path, search_type, size_of_list_of_folders, list_of_images, self.list_of_directories) 
+									(self.test_path, search_type, size_of_list_of_folders, \
+									list_of_images, self.list_of_directories) 
 		if self.are_items_equal(duplicated_images, list_of_images_to_look_for) == False:
 			self.fail(self.message)
 
