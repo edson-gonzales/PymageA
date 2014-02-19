@@ -77,8 +77,3 @@ class TestImageFile(unittest.TestCase):
 	def test_rotate_image_return_FALSE_if_image_is_not_rotate_with_integer_angle_out_of_range(self):
 		resul = self.image_file_test.verify_image_values(self.path_resources, 'balon.png')	
 		self.assertFalse(self.image_file_test.rotate_image(182))
-
-
-if __name__ == "__main__":
-	unittest.main()
-

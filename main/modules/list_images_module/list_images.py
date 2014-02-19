@@ -119,8 +119,8 @@ class ListImages():
 			This list also includes the top level path given as argument.
 			With above example we will have the below list returns
 			list_of_directories_full_path = ['D:/images/personal images',
-											'D:/images/personal images/photos',
-											'D:/images/personal images/photos/draws',
+                                            'D:/images/personal images/photos',
+                                            'D:/images/personal images/photos/draws',
 		
 		"""
 		

@@ -4,8 +4,6 @@ import os
 import sys
 import platform
 
-
-
 class ImageFile():
 	"""Class ImageFile handles the image files, all operation to image file are described in it"""
 	file_name =''
@@ -67,7 +65,6 @@ class ImageFile():
 			self.set_file_owner_in_platform_linux(full_path_file_image, full_name_file_image)
 		if platform.system() == 'Windows' :
 			self.set_file_owner_in_platform_Windows(full_path_file_image, full_name_file_image)
-		
 
 	def set_file_owner_in_platform_linux(self, full_path_file_image, full_name_file_image):
 		""" Set owner to imageFile  when project is running in platform Linux
@@ -95,18 +92,18 @@ class ImageFile():
 		mypath = os.path.dirname(os.path.abspath(__file__))
 		new_name = os.path.dirname(os.path.abspath(__file__)) + '/delete' + full_name_file_image + '.txt'
 		new_name = os.path.abspath (new_name)
-		command_windows = 'dir /q "'  + full_path_file_image + '\\' + full_name_file_image + '">' + '"'+new_name+'"'
+		command_windows = 'dir /q "'  + full_path_file_image + '\\' + full_name_file_image + '">' +\
+                        '"'+new_name+'"'
 		info_file = os.system(command_windows)
 		try:
 			file_info = open(new_name)
 			lines = file_info.readlines()
 			info_file_owner = (lines[5].rstrip("\n")).split(' ')
-			self.file_owner = (info_file_owner[len(info_file_owner)-2]).split("\\")
+			self.file_owner = (info_file_owner[len(info_file_owner) - 2]).split("\\")
 			file_info.close()
 			os.remove(new_name)
 		except IOError:
 				print("File cannot open" + new_name)
-
 
 	def is_valid_image(self,full_path_file_image,full_name_file_image):
 		"""Validate the image file and path and return a True/False 
@@ -129,7 +126,6 @@ class ImageFile():
 				return True
 		return False
 
-
 	def get_complete_image_with_type(self):
 		"""Return the name and extension of image"""
 		return (self.get_file_name() + "." + self.get_file_type())
@@ -150,15 +146,15 @@ class ImageFile():
 		 """
 		self.file_name = file_name_image
 
-	def set_size_pixels(self, size_high_image, size_width_image):
+	def set_size_pixels(self, size_height_image, size_width_image):
 		""" Set dimensions to imageFile
 
 		Keyword arguments:
-		size_high_image-- high image file
+		size_height_image-- high image file
 		size_witdh_image-- width image file
 		
 		 """
-		self.file_size_high = size_high_image
+		self.file_size_high = size_height_image
 		self.file_size_width = size_width_image
 
 	def get_file_size_high(self):
@@ -168,12 +164,10 @@ class ImageFile():
 	def get_file_size_width(self):
 		"""Return size(with in pixels) of imageFile"""
 		return self.file_size_width
-
 	
 	def get_file_owner(self):
 		"""Return owner of imageFile"""
 		return self.file_owner
-
 
 	def set_size_KB_image(self, size_image_KB):
 		""" Set sizein KB to imageFile
@@ -188,7 +182,6 @@ class ImageFile():
 		"""Return size in KB of imageFile"""
 		return self.size_KB_image
 
-
 	def get_file_type(self):
 		"""Return type of imageFile"""
 		return self.file_type
@@ -201,7 +194,6 @@ class ImageFile():
 		
 		"""
 		self.file_type = file_type_image
-
 	
 	def set_file_path(self, file_path_image):
 		""" Set path to imageFile
@@ -240,7 +232,10 @@ class ImageFile():
 		if (self.is_valid_size_image(new_width_image, new_high_image) == True):
 			image_Change_size = Image.open(self.file_image_full_path)
 			image_Change_size = image_Change_size.resize((new_width_image, new_high_image), Image.ANTIALIAS)
-			image_Change_size.save(os.path.abspath(self.file_image_full_path))
+			try:
+				image_Change_size.save(os.path.abspath(self.file_image_full_path))
+			except Excpetion as e:
+				print e + "An error has occured while saving images"
 			return True
 		return False
 
@@ -273,13 +268,13 @@ class ImageFile():
 		if (self.is_valid_angle_image(angle_to_rotate)):
 			image_rotate = Image.open(self.file_image_full_path)
 			image_rotate = image_rotate.rotate(angle_to_rotate)
-			image_rotate.save(self.file_image_full_path)
+			try:
+				image_rotate.save(self.file_image_full_path)
+			except Exception as e:
+				print e + "An error occured while saving the image"
 			return True
 
 		return False
-
-
-
 
 	def is_valid_angle_image(self, angle):
 		""" Verify if the angle is a integer value and is in proper range: 0 ..180
