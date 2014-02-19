@@ -3,7 +3,7 @@ import sys
 import os.path
 import shutil
 
-sys.path.append("../../../")
+sys.path.append("../../")
 from main.modules.list_images_module.list_images import ListImages
 from main.modules.searcher_module.search_by_name import SearchDuplicatesByName
 from main.modules.searcher_module.search_by_size import SearchDuplicatesBySize
@@ -19,7 +19,7 @@ class TestListImages(unittest.TestCase):
 	
 	def setUp(self):
 		self.list_images = ListImages()
-		self.test_path, not_needed_current_dir = os.path.split(os.getcwd())
+		self.test_path = os.getcwd()
 		self.message = ""
 	
 	def are_items_equal(self, list_of_images_expected, list_of_images_obtained):
@@ -103,8 +103,8 @@ class TestListImages(unittest.TestCase):
 		# If there is some permissions error
 		try:
 			shutil.copy(path_of_image_to_copy_to_user_home, user_home_images_directory_path)
-		except IOError as e:
-			print "I/O error({0}): {1}".format(e.errno, e.strerror)
+		except Exception as e:
+			print e
 		
 		self.list_of_directories = self.list_images.get_all_nested_directories("")
 		size_of_list_of_folders = len(self.list_of_directories)
@@ -143,5 +143,3 @@ class TestListImages(unittest.TestCase):
 		if self.are_items_equal(duplicated_images, list_of_images_to_look_for) == False:
 			self.fail(self.message)
 
-if __name__ == '__main__':
-	unittest.main()
