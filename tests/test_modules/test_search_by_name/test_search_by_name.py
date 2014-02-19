@@ -29,21 +29,57 @@ class TestSearchByName(unittest.TestCase):
 			self.message = "Not equal. The length of lists is different"
 		return are_equal		
 	
-	def test_search_by_name_returnd_a_list_of_duplicate_images(self):
+	def test_search_by_name_returnd_a_list_of_duplicate_images_when_one_duplicated(self):
 		list_of_images = []
 		self.test_path = self.test_path + "/images_test_duplicates"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
-		list_of_images_duplicates_expected = ['balon.jpg']
+		list_of_images_duplicates_expected = ['balon.jpg','balon.jpg']
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
 		list_of_images_dupes_by_name = self.search_by_name.search_duplicates(list_of_images_obtained)
-		print len(list_of_images_duplicates_expected)
-		print len(list_of_images_dupes_by_name)
 		if self.are_items_equal(list_of_images_duplicates_expected, list_of_images_dupes_by_name) == False:
 			self.fail(self.message)
+	
+	def test_search_by_name_returnd_a_list_of_duplicate_images_when_two_duplicated(self):
+		list_of_images = []
+		self.test_path = self.test_path + "/images_test_duplicates2"
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		list_of_images_duplicates_expected = ['balon.jpg','balon.jpg','balon.jpg']
+		list_of_images_obtained = self.list_images.get_all_images_from_directory \
+								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
-
+		list_of_images_dupes_by_name = self.search_by_name.search_duplicates(list_of_images_obtained)
+		if self.are_items_equal(list_of_images_duplicates_expected, list_of_images_dupes_by_name) == False:
+			self.fail(self.message)
+	
+	def test_search_by_name_returnd_a_list_of_duplicate_images_when_two_different_images_are_duplicated(self):
+		list_of_images = []
+		self.test_path = self.test_path + "/images_test_duplicates3"
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		list_of_images_duplicates_expected = ['balon.jpg','balon.jpg','balon.jpg','equipo.png','equipo.png']
+		list_of_images_obtained = self.list_images.get_all_images_from_directory \
+								(size_of_list_of_folders, list_of_images, self.list_of_directories)
+		
+		list_of_images_dupes_by_name = self.search_by_name.search_duplicates(list_of_images_obtained)
+		if self.are_items_equal(list_of_images_duplicates_expected, list_of_images_dupes_by_name) == False:
+			self.fail(self.message)
+	
+	def test_show_images(self):
+		list_of_images = []
+		self.test_path = self.test_path + "/images_test_duplicates3"
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		list_of_images_duplicates_expected = ['balon.jpg','balon.jpg','balon.jpg','equipo.png','equipo.png']
+		list_of_images_obtained = self.list_images.get_all_images_from_directory \
+								(size_of_list_of_folders, list_of_images, self.list_of_directories)
+		
+		list_of_images_dupes_by_name = self.search_by_name.search_duplicates(list_of_images_obtained)
+		self.search_by_name.show_dupes_images_path(list_of_images_dupes_by_name)
+		
+	
 if __name__ == '__main__':
 	unittest.main()

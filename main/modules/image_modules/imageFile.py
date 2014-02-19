@@ -136,7 +136,7 @@ class ImageFile():
 
 	def get_full_path_with_name_image_type(self):
 		"""Return location(path) and name.extension of image"""
-		return (os.path.join(self.get_path(),self.get_complete_image_with_type()))
+		return (os.path.join(self.get_file_path(),self.get_complete_image_with_type()))
 
 	def get_file_name(self):
 		"""Return name of imageFile"""

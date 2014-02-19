@@ -6,6 +6,7 @@ import shutil
 sys.path.append("../../../")
 from main.modules.list_images_module.list_images import ListImages
 from main.modules.searcher_module.search_by_name import SearchDuplicatesByName
+from main.modules.searcher_module.search_by_size import SearchDuplicatesBySize
 from main.modules.image_modules.imageFile import ImageFile
 
 
@@ -116,13 +117,26 @@ class TestListImages(unittest.TestCase):
 		if self.is_item_in_list(image_expected, list_of_images_obtained) == False:
 			self.fail(self.message)
 	
-	def test_search_returns_a_concrete_search_on_given_path(self):
+	def test_search_returns_a_earch_by_name_on_given_path(self):
 		list_of_images = []
-		self.test_path = self.test_path + "/images4_for_unit_test"
+		self.test_path = self.test_path + "/images_test_duplicates2"
 		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
 		size_of_list_of_folders = len(self.list_of_directories)
 		search_type = SearchDuplicatesByName()
-		duplicated_images = ['balon.jpg','equipo.png','T-shirt.bmp']
+		duplicated_images = ['balon.jpg','balon.jpg','balon.jpg']
+		list_of_images_to_look_for = self.list_images.search_images_in_path \
+									(self.test_path, search_type, size_of_list_of_folders, \
+									list_of_images, self.list_of_directories) 
+		if self.are_items_equal(duplicated_images, list_of_images_to_look_for) == False:
+			self.fail(self.message)
+	
+	def test_search_returns_search_by_size_on_given_path(self):
+		list_of_images = []
+		self.test_path = self.test_path + "/images_test_duplicates2"
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		search_type = SearchDuplicatesBySize()
+		duplicated_images = ['balon.jpg','balon.jpg','balon.jpg']
 		list_of_images_to_look_for = self.list_images.search_images_in_path \
 									(self.test_path, search_type, size_of_list_of_folders, \
 									list_of_images, self.list_of_directories) 
