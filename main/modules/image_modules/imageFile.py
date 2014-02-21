@@ -286,3 +286,5 @@ class ImageFile():
 		if (-180 <= angle <=180 and type(angle) == int):
 			return True
 		return False
+	
+	

@@ -73,8 +73,8 @@ class TestListImages(unittest.TestCase):
 		list_of_images_expected = ['balon.jpg','equipo.png','T-shirt.bmp']
 		list_of_images_obtained = self.list_images.get_all_images_from_directory \
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
-		if are_items_equal(list_of_images_expected, list_of_images_obtained) == False:
-			self.fail(self.message)
+		result_and_message = are_items_equal(list_of_images_expected, list_of_images_obtained)
+		self.assertTrue(result_and_message[0], result_and_message[1])
 	
 	def test_directories_from_user_are_returned_if_empty_path(self):
 		list_of_images = []

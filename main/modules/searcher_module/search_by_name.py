@@ -2,24 +2,22 @@ from general_search import GeneralSearch
 
 class SearchDuplicatesByName(GeneralSearch):
 	
-	def search_duplicates(self, list_of_images_to_look_for):
-		"""Search duplicated images by name and return all the equal items in a list.
-			This list contains a list of ImageFile objects
+	def comparison_criteria(self, first_image, second_image):
+		""" Compare if the name is the same for two images given
 			
 		Keyword arguments:
-		list_of_images_to_look_for -- The list of ImageFile objects where we are going to search
-									equal images taking as criteria the name
+		first_image -- An ImageFile object that will be compared with secon_image
+		second_image -- An ImageFile object that will be compared with first_image
+		
 		Returned values:
-		list_of_duplicates -- The list of ImageFiles that are equal.
+		is_image_size_the_same -- It will Return True if the name of both images is the same
+								It will Return False if the name of both images is not the same
+		"""
 		
-		""" 
-		list_to_compare = list_of_images_to_look_for
-		for image_object in list_of_images_to_look_for:
-			num_of_copies = 0
-			for image_object_compare in list_to_compare:
-				if image_object_compare.get_complete_image_with_type() == image_object.get_complete_image_with_type():
-					num_of_copies = num_of_copies + 1
-			if num_of_copies > 1:
-				self.list_of_duplicates.append(image_object)
+		if (first_image.get_complete_image_with_type() == second_image.get_complete_image_with_type()):
+			self.is_image_name_the_same = True
+		else:
+			self.is_image_name_the_same = False
 		
-		return self.list_of_duplicates	
+		return self.is_image_name_the_same
+				

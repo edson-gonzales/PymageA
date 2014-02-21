@@ -66,4 +66,4 @@ class TestSearchBySize(unittest.TestCase):
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
 		list_of_images_dupes_by_name = self.search_by_size.search_duplicates(list_of_images_obtained)
-		self.search_by_size.show_path_of_dupicated_images()
+		self.search_by_size.show_path_of_duplicated_images()
