@@ -1,0 +1,32 @@
+test_set_image_values_return_TRUE_if_file_is_an_image_JPG()
+test_set_image_values_return_TRUE_if_file_is_an_image_BMP()
+test_set_image_values_return_TRUE_if_file_is_an_image_PNG()
+
+test_set_image_values_return_TRUE_if_file_exist_in_path()
+
+test_set_image_values_return_TRUE_if_path_is_validate_path()
+
+test_set_image_values_return_exception_if_if_file_is_not_an_image()
+
+test_set_image_values_return_exception_if_path_is_not_validate_path()
+
+test_set_image_values_return_FALSE_if_file_does_not_exists_in_path()
+
+
+
+
+	def test_set_image_values_return_TRUE_if_file_is_an_image_BMP(self):
+
+	def test_set_image_values_return_TRUE_if_file_is_an_image_PNG(self):
+
+	def test_set_image_values_return_TRUE_if_file_exist_in_path(self):	
+
+	def test_set_image_values_return_TRUE_if_path_is_validate_path(self):
+
+	def test_set_image_values_return_exception_if_if_file_is_not_an_image(self):
+	def test_set_image_values_return_exception_if_file_name_have_not_value(self):
+
+	def test_set_image_values_return_exception_if_path_is_not_validate_path(self):
+
+	def test_set_image_values_return_FALSE_if_file_does_not_exists_in_path(self):
+
