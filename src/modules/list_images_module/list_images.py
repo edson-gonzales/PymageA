@@ -31,7 +31,6 @@ class ListImages():
 		
 		is_supported_format = False
 		if extension in self.image_file_types:
-                        print "supported"
 			is_supported_format = True
 		
 		return is_supported_format
@@ -80,24 +79,18 @@ class ListImages():
 		
 		"""
 		
-		next_folder_in_array = len(list_of_directories) - size # Each position of the directory list
-                
+		next_folder_in_array = len(list_of_directories) - size # Each position of the directory list 
 		if next_folder_in_array >= len(list_of_directories):
-                        print "return"
 			return list_of_images
 		else:
 			list_of_files = os.listdir(list_of_directories[next_folder_in_array])
 			size = size - 1
-                        print"list of files",list_of_files
 			for file_name in list_of_files:
 				file_base_name, file_extension = os.path.splitext(file_name)
-                                print"file name base",file_base_name, file_extension,file_name
 				if self.is_file_in_image_scope(file_extension):
 					full_image_path = list_of_directories[next_folder_in_array] + "/"
 					image_object = ImageFile()
 					image_object.verify_image_values(full_image_path, file_name)
-                                        print "mi namae is :",image_object.get_file_name()
-                                        print"image ath:",full_image_path, file_name
 					list_of_images.append(image_object)
 					
 		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
@@ -132,8 +125,7 @@ class ListImages():
 		"""
 		
 		list_of_directories_full_path = []
-                
-                for root, dirs, files in os.walk(self.get_path(given_path)):
+		for root, dirs, files in os.walk(self.get_path(given_path)):
 			list_of_directories_full_path.append(root)
 		
 		return list_of_directories_full_path

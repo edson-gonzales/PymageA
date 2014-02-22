@@ -51,7 +51,7 @@ class Panel_pymageA(JPanel):
         buttons_panel.setLayout(BoxLayout(buttons_panel, BoxLayout.X_AXIS))
         buttons_panel.add(Box.createRigidArea(self._spacer_components))
         buttons_panel.add(JButton("All Images",actionPerformed = self.option_all_image_button_clicked))
-        buttons_panel.add(JButton("Duplicates Images by Size"))
+        buttons_panel.add(JButton("Duplicates Images by Size"),)
         buttons_panel.add(JButton("Duplicates Images by Name"))
         north_panel.add(path_panel,BorderLayout.NORTH)
         north_panel.add(buttons_panel,BorderLayout.SOUTH)

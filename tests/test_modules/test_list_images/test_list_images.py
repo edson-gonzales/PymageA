@@ -3,11 +3,11 @@ import sys
 import os.path
 import shutil
 
-sys.path.append("../../")
-from main.modules.list_images_module.list_images import ListImages
-from main.modules.searcher_module.search_by_name import SearchDuplicatesByName
-from main.modules.searcher_module.search_by_size import SearchDuplicatesBySize
-from main.modules.image_modules.imageFile import ImageFile
+sys.path.append("../../../")
+from modules.list_images_module.list_images import ListImages
+from modules.searcher_module.search_by_name import SearchDuplicatesByName
+from modules.searcher_module.search_by_size import SearchDuplicatesBySize
+from modules.image_modules.imageFile import ImageFile
 from tests.test_modules.comparison_tools import *
 
 class TestListImages(unittest.TestCase):
@@ -83,7 +83,7 @@ class TestListImages(unittest.TestCase):
 		# If there is some permissions error
 		try:
 			shutil.copy(path_of_image_to_copy_to_user_home, user_home_images_directory_path)
-		except Exception as e:
+		except Exception , e:
 			print e
 		
 		self.list_of_directories = self.list_images.get_all_nested_directories("")
