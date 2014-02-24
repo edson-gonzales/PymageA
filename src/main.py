@@ -19,7 +19,7 @@ class MainWindow():
         main_panel.setLayout(layout)
 
 
-    def show_windows(self):
+    def show_window(self):
         self.frame.setVisible(True)
 
     def create_tool_bar(self):
@@ -35,11 +35,8 @@ class MainWindow():
 
 
     def create_center_panel(self):
-        center_panel = Panel_pymageA()
+        center_panel = Panel_pymageA(self.frame)
         self.frame.getContentPane().add(center_panel, BorderLayout.CENTER)
-
-
-
 
 
 
@@ -47,4 +44,7 @@ class MainWindow():
 if __name__ == "__main__":
     window = MainWindow()
     window.initilialize_ui()
-    window.show_windows()
+    window.show_window()
+
+
+

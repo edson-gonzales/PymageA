@@ -1,79 +1,119 @@
-
+from java.awt import Dimension
 from java.awt import GridBagConstraints
 from javax.swing import JLabel
 from javax.swing import JList
 from javax.swing import JPanel
+#from pymageA_UI.panel_pymageA import jframe
 from modules.image_modules.imageFile import ImageFile
 from javax.swing.event import ListSelectionListener
+from javax.swing import BorderFactory
+from javax.swing.border import EtchedBorder
+from java.awt import GridBagLayout
+from javax.swing import BoxLayout
+from javax.swing import Box
+from java.awt import Image
+from java.io import *
+from javax.imageio import *
+from java.awt.image import *
+from javax.swing import ImageIcon
+from image_pymageUI import ScaledImageLabel
+from java.awt.event import ActionListener
+from dialog_pymageA import Panel_modifyImage
 
 class JListMouseListener(ListSelectionListener):
-
+    
     def __init__(self, jlist,jpanel,list_images):
+        self._spacer_panels = Dimension(5, 5)
+        ListSelectionListener.__init__(self)
         self.jlist = jlist
         self.jpanel = jpanel
         self.list_images = []
         self.list_images = list_images
-        ListSelectionListener.__init__(self)
-        
-    def get_image(self, path_name_image):
-        print "path_name_iamge",path_name_image
-        for i in range(len(self.list_images)):
-            print "esesesfor ",self.list_images[i].get_file_size_width()," kkkkk",path_name_image,"---"
-            if path_name_image == str(self.list_images[i]):
-                return self.list_images[i]
-        
-
+           
+    def updateList(self,list_images):
+        self.list_images = list_images
     def valueChanged(self,event):
-        element_image = ImageFile()
-        
         selections = self.jlist.getSelectedIndex()
-        #print"selecion ",selections
-        path_name_image = self.jlist.getModel()
-        element_image = self.get_image(path_name_image)
-        #element_model= ImageFile(model.getElementAt(selections))
-       # element_image = self.jlist.getSelectedValue()
-        print "tet typer" ,type(element_image),":size",element_image.get_file_size_width() , "-- ";
-        ##print "model" ,type(element_model), "-- ";
+        model = self.jlist.getModel()
+        selec = model.getElementAt(selections)
+        image_selected = ImageFile()
+        image_selected = self.list_images[selections]
+        element_image = self.jlist.getSelectedValues()
+        self.jpanel.removeAll()
+        self.jpanel.repaint()
+        self.show_details_image(image_selected)
+        self.jpanel.revalidate()
+        
+        
 
-
-#        element_image = self.jlist.getSelectedValues()
-        #print "kkk:",element_image.get_complete_image_with_type()
-
-        #print"soy y empezare a poner a mi panel de images ",self.jlist.getSelectedValue()
+    def show_details_image(self,image_selected):
+        details_image_text_panel = JPanel()
+        details_image_text_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Details Image"))
+        details_image_text_panel.setLayout(GridBagLayout())
         cConstraints = GridBagConstraints()
         cConstraints.weightx = 0.1
         cConstraints.weighty = 0.1
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 0
-        self.jpanel.add(JLabel("Name"),cConstraints)
+        details_image_text_panel.add(JLabel("Name"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 0
-        self.jpanel.add(JLabel(""),cConstraints)
+        details_image_text_panel.add(JLabel(image_selected.get_complete_image_with_type()),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 1
-        self.jpanel.add(JLabel("Width:"),cConstraints)
+        details_image_text_panel.add(JLabel("Width:"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 1
-        self.jpanel.add(JLabel(""),cConstraints)
+        details_image_text_panel.add(JLabel(str(image_selected.get_file_size_width())),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 2
-        self.jpanel.add(JLabel("Height"),cConstraints)
+        details_image_text_panel.add(JLabel("Height"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 2
-        self.jpanel.add(JLabel(""),cConstraints)
+        details_image_text_panel.add(JLabel(str(image_selected.get_file_size_high())),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 3
-        self.jpanel.add(JLabel("Size KB"),cConstraints)
+        details_image_text_panel.add(JLabel("Size KB"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 3
-        self.jpanel.add(JLabel(""),cConstraints)
-        self.jpanel.revalidate()
+        details_image_text_panel.add(JLabel(str(image_selected.get_size_KB_image())),cConstraints)
+        self.jpanel.add(details_image_text_panel)
+
+        #create secondt jpanel to show image
+        image_panel = JPanel()
+        image_panel.setLayout(BoxLayout( image_panel, BoxLayout.Y_AXIS))
+        image_panel.add(Box.createRigidArea(self._spacer_panels))
+        #labelImage = ScaledImageLabel()
+        #image = ImageIO.read(File(image_selected.get_full_path_with_name_image_type()))
+        #labelImage.setIcon(ImageIcon(image))
+        labelImage = JLabel("mi image")
+        image_panel.add(labelImage)
+        self.jpanel.add(image_panel)
+        
         #self.jbutton.setEnabled(True)# To change this template, choose Tools | Templates
+class ModifyImageButtonListener (ActionListener):
+    def __init__(self, jlist,jpanel,list_images,jframe):
+        ActionListener.__init__(self)
+        self._spacer_panels = Dimension(5, 5)
+        self.jlist = jlist
+        self.jframe = jframe
+        self.jpanel = jpanel
+        self.list_images = []
+    def updateList(self,list_images):
+        self.list_images = list_images
+        
+    def actionPerformed(self, event):
+        selections = self.jlist.getSelectedIndex()
+        image_selected = ImageFile()
+        image_selected = self.list_images[selections]
+        modify_image_panel = Panel_modifyImage(image_selected,self.jframe)
+        print("click in buttonModify",image_selected.get_complete_image_with_type())
+
