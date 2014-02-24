@@ -3,11 +3,12 @@ from java.awt import *
 from java.awt.image import *
 from java.io import *
 from java.lang.Math import *
-from javax.swing import JLabel
-from java.awt import Graphics
-from java.awt import Image
-from  java.awt import Component
+import sys
+sys.path.append("../../../")
+from  modules.logger_module.logger import  Logger
+
 class ManagerImage:
+    logger_file = Logger()
 
     def resize_image(self,input_file, width, height,type_image):
         """ Modify image with new sizes in pixels 
@@ -17,13 +18,13 @@ class ManagerImage:
         height_image: new height size to image
 
         """
-        input_file1 = "c:\Users\mitest.jpg"
+
         # Get the BufferedImage object by reading the image from the given input stream
         buffered_image = ImageIO.read(FileInputStream(input_file))
 
         # I am using fast scaling
         resized_img = buffered_image.getScaledInstance(width, height, Image.SCALE_DEFAULT)
-        print "mis heig and wirf",width, height, type_image
+
         # Create a BufferedImage object with the width and height and of the image type
         buffered_image_type = BufferedImage(width, height, buffered_image.getType())
 
@@ -39,8 +40,8 @@ class ManagerImage:
         # The first argument is the resized image object
         # The second argument is the image file type, So i got the extension of the output file and passed it
         # The next argument is the FileOutputStream to where the resized image is to be written.
-        print "soy inpu file",input_file
-        ImageIO.write(buffered_image_type, type_image , FileOutputStream(input_file1))
+        ImageIO.write(buffered_image_type_image, type_image , FileOutputStream(output_file))
+        self.logger_file.set_info("The image" + input_file + " was resized.")
 
 
     def rotate_image(self, input_file, angle, type_image):
@@ -69,6 +70,7 @@ class ManagerImage:
         # The second argument is the image file type, So i got the extension of the output file and passed it
         # The next argument is the FileOutputStream to where the resized image is to be written.
         ImageIO.write(image_to_rotate, type_image, FileOutputStream(input_file))
+        self.logger_file.set_info("The image" + input_file + " was rotated")
 
 
     def size_width(self, input_file):
@@ -84,37 +86,3 @@ class ManagerImage:
         # Get the BufferedImage object by reading the image from the given input stream
         image_info = ImageIO.read(FileInputStream(input_file))
         return image_info.getHeight()
-
-    def drawScaledImage(self, image, canvas, g):
-        imgWidth = image.getWidth(None)
-        imgHeight = image.getHeight(None)
-        imgAspect = float(imgHeight / imgWidth) #double
-        canvasWidth = canvas.getWidth()
-        canvasHeight = canvas.getHeight()
-        canvasAspect = float(canvasHeight / canvasWidth)
-        x1 = 0 # top left X position
-        y1 = 0 # top left Y position
-        x2 = 0 # bottom right X position
-        y2 = 0 # bottom right Y position
-        if (imgWidth < canvasWidth and imgHeight < canvasHeight):
-            # the image is smaller than the canvas
-            x1 = (canvasWidth - imgWidth)  / 2
-            y1 = (canvasHeight - imgHeight) / 2
-            x2 = imgWidth + x1
-            y2 = imgHeight + y1
-        else:
-            if (canvasAspect > imgAspect):
-                y1 = canvasHeight
-                # keep image aspect ratio
-                canvasHeight = int ((canvasWidth * imgAspect))
-                y1 = (y1 - canvasHeight) / 2
-            else:
-                x1 = canvasWidth
-                #keep image aspect ratio
-                canvasWidth = int(canvasHeight / imgAspect)
-                x1 = (x1 - canvasWidth) / 2
-            x2 = canvasWidth + x1
-            y2 = canvasHeight + y1
-        
-        g.drawImage(image, x1, y1, x2, y2, 0, 0, imgWidth, imgHeight, None)
-

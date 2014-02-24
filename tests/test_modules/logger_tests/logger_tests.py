@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.append("../../../")
 
-from main.modules.logger_module.logger import Logger
+from modules.logger_module.logger import Logger
 
 class ListloggerTest(unittest.TestCase):
 	test_logger = ''
@@ -47,6 +47,17 @@ class ListloggerTest(unittest.TestCase):
 	def test_set_error_is_registering_in_log(self):
 		self.test_logger.set_error("This a error message 0001")
 		self.assertTrue(self.test_logger.search_text_in_log_file('This a error message 0001'))
+	
+	def test_set_exception_is_registering_in_log(self):
+		(x,y) = (5,0)
+		try:
+			z = x/y
+			#except ZeroDivisionError, e:
+		except: 
+			exception_type = str(sys.exc_info()[0])
+			message_exception= str(sys.exc_info()[1])
+			self.test_logger.set_exception(exception_type,message_exception)
+		self.assertTrue(self.test_logger.search_text_in_log_file('integer division or modulo by zero'))
 	
 	def test_if_set_is_not_executed_then_message_messsage_is_not_registered_in_log(self):
 		self.assertFalse(self.test_logger.search_text_in_log_file('Other message error message 0002'))

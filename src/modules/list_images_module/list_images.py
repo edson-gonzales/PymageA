@@ -1,9 +1,11 @@
 import os
 import sys
 import os.path
-
+sys.path.append("../../../")
 from modules.searcher_module.searcher import Searcher
 from modules.image_modules.imageFile import ImageFile
+from modules.logger_module.logger import Logger
+
 
 
 class ListImages():
@@ -15,6 +17,7 @@ class ListImages():
 	
 	def __init__(self):
 		self.image_file_types = ['.jpg', '.png', '.bmp']
+                logger_file = Logger()
 	
 	def is_file_in_image_scope(self, extension):
 		"""Verify extension is contained in files supported and return a True/False 
@@ -83,16 +86,20 @@ class ListImages():
 		if next_folder_in_array >= len(list_of_directories):
 			return list_of_images
 		else:
-			list_of_files = os.listdir(list_of_directories[next_folder_in_array])
-			size = size - 1
-			for file_name in list_of_files:
+                     try:
+                         list_of_files = os.listdir(list_of_directories[next_folder_in_array])
+			 size = size - 1
+			 for file_name in list_of_files:
 				file_base_name, file_extension = os.path.splitext(file_name)
 				if self.is_file_in_image_scope(file_extension):
 					full_image_path = list_of_directories[next_folder_in_array] + "/"
 					image_object = ImageFile()
 					image_object.verify_image_values(full_image_path, file_name)
 					list_of_images.append(image_object)
-					
+                     except:
+                         exception_type = str(sys.exc_info()[0])
+                         message_exception= str(sys.exc_info()[1])
+                         self.logger_file.set_exception(exception_type,message_exception)
 		return (self.get_all_images_from_directory(size, list_of_images, list_of_directories))
 		
 	def get_all_nested_directories(self, given_path):
@@ -153,5 +160,6 @@ class ListImages():
 									list_of_images, list_of_directories)
 		searcher = Searcher(search_type);
 		list_of_duplicated_images = searcher.search_duplicates(list_of_images_from_path);
+                self.logger_file.set_info("list of duplicated obtained wihtout problem")
 		return list_of_duplicated_images;
 		

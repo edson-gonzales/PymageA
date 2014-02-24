@@ -3,6 +3,9 @@ import os
 import sys
 import platform
 from manager_image import ManagerImage
+sys.path.append("../../../")
+from  modules.logger_module.logger import  Logger
+
 class ImageFile():
 	"""Class ImageFile handles the image files, all operation to image file are described in it"""
 	file_name =''
@@ -20,6 +23,7 @@ class ImageFile():
 		self.file_path = "" #root path by default-windows
 		self.max_size = 1000
 		self.min_size = 1
+		self.logger_file = Logger()
 		
 	def verify_image_values(self, full_path_file_image, full_name_file_image): 
 		"""verify if path and name are valid and set the values in object ImageFile 
@@ -51,6 +55,7 @@ class ImageFile():
 			self.set_size_pixels(new_image.size_height(image_full_path_name), new_image.size_width(image_full_path_name))
 			self.set_file_onwer(full_path_file_image, full_name_file_image)			
 			return True
+		self.logger_file.set_error("Image:" + full_path_file_image + full_name_file_image + "."+ self.file_type  + " was not created as Object ImageFile")
 		return False
 
 	def set_file_onwer(self, full_path_file_image, full_name_file_image):
@@ -62,8 +67,10 @@ class ImageFile():
 		"""
 		if (platform.system() == "Linux"):
 			self.set_file_owner_in_platform_linux(full_path_file_image, full_name_file_image)
+			self.logger_file.set_info("set owner plataform Linux")
 		if platform.system() == 'Windows' :
 			self.set_file_owner_in_platform_Windows(full_path_file_image, full_name_file_image)
+			self.logger_file.set_info("set owner plataform Windows")
 
 	def set_file_owner_in_platform_linux(self, full_path_file_image, full_name_file_image):
 		""" Set owner to imageFile  when project is running in platform Linux
@@ -102,7 +109,7 @@ class ImageFile():
 			file_info.close()
 			os.remove(new_name)
 		except IOError:
-				print("File cannot open" + new_name)
+				self.logger_file.set_error("File cannot open" + new_name)
 
 	def is_valid_image(self,full_path_file_image,full_name_file_image):
 		"""Validate the image file and path and return a True/False 
@@ -121,8 +128,7 @@ class ImageFile():
 		if os.path.isfile(full_path_image):#file exist		
 			split_name_image = os.path.splitext(full_name_file_image)
                         extension=split_name_image[1]
-                        print"soy ",extension
-                        
+                                                
 			if (self.is_image_type_valid(extension)) == True:
 				return True
 		return False
