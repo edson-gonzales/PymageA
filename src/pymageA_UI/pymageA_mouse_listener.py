@@ -15,6 +15,8 @@ from java.awt import Image
 from java.io import *
 from javax.imageio import *
 from java.awt.image import *
+from java.awt import Canvas
+from java.awt import Toolkit
 from javax.swing import ImageIcon
 from image_pymageUI import ScaledImageLabel
 from java.awt.event import ActionListener
@@ -34,6 +36,8 @@ class JListMouseListener(ListSelectionListener):
         self.list_images = list_images
         self.jbutton = jbutton
         self.jpanel_south = jpanel_south
+        self.canvas1 = MyCanvas(None)
+        self.canvas1.setSize(300,300);
            
     def updateList(self,list_images):
         """
@@ -57,7 +61,7 @@ class JListMouseListener(ListSelectionListener):
         self.jpanel.removeAll()
         self.jpanel.repaint()
         self.show_details_image(image_selected)
-        #self.jpanel.revalidate()
+        self.jpanel.revalidate()
         
         
 
@@ -109,8 +113,13 @@ class JListMouseListener(ListSelectionListener):
         #labelImage = ScaledImageLabel()
         #image = ImageIO.read(File(image_selected.get_full_path_with_name_image_type()))
         #labelImage.setIcon(ImageIcon(image))
-        labelImage = JLabel("mi image")
-        image_panel.add(labelImage)
+        #labelImage = JLabel("mi image")
+        #image_panel.add(labelImage)
+        image_panel.add(self.canvas1);
+        toolkit = Toolkit.getDefaultToolkit()
+        image1 = toolkit.getImage(image_selected.get_full_path_with_name_image_type() )
+        self.canvas1.setImage(image1)
+        self.canvas1.repaint()
         self.jpanel.add(image_panel)
         
         #self.jbutton.setEnabled(True)# To change this template, choose Tools | Templates
@@ -130,5 +139,16 @@ class ModifyImageButtonListener (ActionListener):
         image_selected = ImageFile()
         image_selected = self.list_images[selections]
         modify_image_panel = Panel_modifyImage(image_selected,self.jframe)
-        
+
+class MyCanvas (Canvas):
+    def MyCanvas(self, img):
+        Canvas.__init__(self)
+        self.img = img
+    def paint (self, g):
+        if(self.img != None):
+            g.drawImage(self.img, 0, 0, 300, 300, self)
+
+    def setImage (self, img):
+        self.img = img
+
 
