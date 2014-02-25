@@ -5,6 +5,7 @@ from javax.swing import JComboBox
 from javax.swing import JButton
 
 from javax.swing import JRadioButton
+from javax.swing import JCheckBox
 from javax.swing import ButtonGroup
 from javax.swing import JFrame
 from java.awt import BorderLayout
@@ -22,16 +23,21 @@ class Panel_modifyImage:
     _spacer_components = Dimension(2, 2)
     _spacer_panels = Dimension(5, 5)
     def __init__(self, image_details, jframe):
+        """
+        All values that will be used are declared in constructor
+        """
         self.jframe = jframe
-        self.frame_details = JFrame("Modify Image")
+        self.frame_details = JFrame("Modify Image: " + image_details.get_complete_image_with_type())
+        self.frame_details.setDefaultCloseOperation( self.frame_details.DO_NOTHING_ON_CLOSE )
         self.image_details = image_details
         self.height_pixels = JComboBox()
         self.width_pixels = JComboBox()
         self.angle_image = JComboBox()
+        self.group_radio = ButtonGroup()
         self.radio_resize = JRadioButton("Resize Image")
         self.radio_resize.setSelected(True)
         self.radio_rotate =JRadioButton("Rotate Image")
-        self.group_radio = ButtonGroup()
+        self.radio_convert =JRadioButton("Convert Image")
         main_panel_modify =  self.frame_details.getContentPane()
         layout = BorderLayout()
         main_panel_modify.setLayout(layout)
@@ -44,6 +50,9 @@ class Panel_modifyImage:
         
 
     def center_panel_options(self):
+        """
+        Show the options to modify the image
+        """
         center_panel = JPanel()
         
         center_panel.setLayout(BoxLayout(center_panel, BoxLayout.Y_AXIS))
@@ -54,6 +63,8 @@ class Panel_modifyImage:
         self.group_radio.add(self.radio_resize)
         self.rotate_option(center_panel)
         self.group_radio.add(self.radio_rotate)
+        self.convert_option(center_panel)
+        self.group_radio.add(self.radio_convert)
         self.frame_details.getContentPane().add(center_panel,BorderLayout.CENTER)
 
     def south_panel_options(self):
@@ -119,18 +130,74 @@ class Panel_modifyImage:
         rotate_panel.add(self.angle_image,cConstraints)
         center_panel.add(rotate_panel)
 
+    def convert_option(self,center_panel):
+        """
+         Show the options to JPanel Convert Image
+        """
+        self.group_formats = ButtonGroup()
+        self.format_jpg = JRadioButton("jpg")
+        self.format_jpg.setSelected(True)
+        self.format_png = JRadioButton("png")
+        self.format_bmp = JRadioButton("bmp")
+        self.group_formats.add(self.format_jpg)
+        self.group_formats.add(self.format_png)
+        self.group_formats.add(self.format_bmp)
+        convert_panel = JPanel()
+        convert_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Convert Image"))
+        convert_panel.setLayout(GridBagLayout())
+        cConstraints = GridBagConstraints()
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridwidth = 2
+        cConstraints.gridx = 0
+	cConstraints.gridy = 0
+        convert_panel.add(self.radio_convert, cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 1
+	cConstraints.gridy = 1
+        convert_panel.add(self.format_jpg,cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 1
+	cConstraints.gridy = 2
+        convert_panel.add(self.format_png , cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 1
+	cConstraints.gridy = 3
+        convert_panel.add(self.format_bmp,cConstraints)
+        center_panel.add(convert_panel)
+
+
     def ok_button_clicked(self,event):
+        """
+        When OK button is clicked diferents actions are performed to validated the news values
+        """
+        exit = 1
         if self.radio_resize.isSelected():
-            print "mi group"
+            
             if (self.height_pixels.getSelectedItem() == str(self.image_details.get_file_size_high()) and self.width_pixels.getSelectedItem() == str(self.image_details.get_file_size_width()) ):
                 JOptionPane.showMessageDialog(None,"Enter new values to resize the image","Message image",JOptionPane.PLAIN_MESSAGE );
+                exit = -1
             else: #save the changes
                 self.image_details.resize_image(int(self.height_pixels.getSelectedItem()), int(self.width_pixels.getSelectedItem()))
                 
         if self.radio_rotate.isSelected():
             self.image_details.rotate_image(int(self.angle_image.getSelectedItem()))
-        self.jframe.setEnabled(True)
-        self.frame_details.dispose()
+
+        if self.radio_convert.isSelected():
+            if self.format_jpg.isSelected():
+                format_selected = self.format_jpg.getText()
+            if self.format_png.isSelected():
+                format_selected = self.format_png.getText()
+            if self.format_bmp.isSelected():
+                format_selected = self.format_bmp.getText()            
+            if((self.image_details.get_file_type()).lower() == ("." + format_selected).lower()):
+                JOptionPane.showMessageDialog(None, "The image cannot to convert to same format. Please select other format" ,"Convert Image",JOptionPane.PLAIN_MESSAGE );
+                exit = -1
+            else:
+                self.image_details.convert_to_other_format(format_selected)
+
+        if (exit ==1):
+            self.jframe.setEnabled(True)
+            self.frame_details.dispose()
         
     def cancel_button_clicked(self, event):
         self.jframe.setEnabled(True)

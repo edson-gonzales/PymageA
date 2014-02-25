@@ -86,3 +86,23 @@ class ManagerImage:
         # Get the BufferedImage object by reading the image from the given input stream
         image_info = ImageIO.read(FileInputStream(input_file))
         return image_info.getHeight()
+
+    def convert_image(self, input_file, output_file, new_format):
+        """
+        Convert the image to other format
+        Keyword arguments:
+		input_file: original image file
+                output_file: new image file
+                new_format: format of image
+        """
+        
+        # Get the BufferedImage object by reading the image from the given input stream
+        buffered_image = ImageIO.read(FileInputStream(input_file))
+        #/ create a blank, RGB, same width and height, and a white background
+	newBufferedImage = BufferedImage(buffered_image.getWidth(),
+			buffered_image.getHeight(), BufferedImage.TYPE_INT_RGB)
+	newBufferedImage.createGraphics().drawImage(buffered_image, 0, 0, Color.WHITE, None)
+        newBufferedImage.createGraphics().dispose()
+
+	#write to type file
+	ImageIO.write(newBufferedImage, new_format, FileOutputStream(output_file))

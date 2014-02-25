@@ -21,20 +21,35 @@ from java.awt.event import ActionListener
 from dialog_pymageA import Panel_modifyImage
 
 class JListMouseListener(ListSelectionListener):
+    """
+    Class to verify the actions that are performent in JList
+    """
     
-    def __init__(self, jlist,jpanel,list_images):
+    def __init__(self, jlist,jpanel,list_images,jbutton,jpanel_south):
         self._spacer_panels = Dimension(5, 5)
         ListSelectionListener.__init__(self)
         self.jlist = jlist
         self.jpanel = jpanel
         self.list_images = []
         self.list_images = list_images
+        self.jbutton = jbutton
+        self.jpanel_south = jpanel_south
            
     def updateList(self,list_images):
+        """
+        update the Jlist where images files are load
+        """
         self.list_images = list_images
+
     def valueChanged(self,event):
-        selections = self.jlist.getSelectedIndex()
+
+        print "soy evento ",event
+        if event == None:
+            print"error"
         model = self.jlist.getModel()
+        if(model.getSize() != 0):
+            self.jbutton.setEnabled(True)
+        selections = self.jlist.getSelectedIndex()
         selec = model.getElementAt(selections)
         image_selected = ImageFile()
         image_selected = self.list_images[selections]
@@ -42,7 +57,7 @@ class JListMouseListener(ListSelectionListener):
         self.jpanel.removeAll()
         self.jpanel.repaint()
         self.show_details_image(image_selected)
-        self.jpanel.revalidate()
+        #self.jpanel.revalidate()
         
         
 
@@ -115,5 +130,5 @@ class ModifyImageButtonListener (ActionListener):
         image_selected = ImageFile()
         image_selected = self.list_images[selections]
         modify_image_panel = Panel_modifyImage(image_selected,self.jframe)
-        print("click in buttonModify",image_selected.get_complete_image_with_type())
+        
 

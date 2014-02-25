@@ -3,7 +3,7 @@ import os
 import sys
 import platform
 from manager_image import ManagerImage
-sys.path.append("../../../")
+sys.path.append("../../../src/")
 from  modules.logger_module.logger import  Logger
 
 class ImageFile():
@@ -295,3 +295,10 @@ class ImageFile():
 		return False
 
 
+        def convert_to_other_format(self, new_format):
+            """ Conver the image to other format or file type
+            Keyword arguments:
+		new_format: new format to convert the image
+            """
+            image_convert = ManagerImage()
+            image_convert.convert_image(self.get_full_path_with_name_image_type(), os.path.join(self.get_file_path(), self.get_file_name()+"."+new_format), new_format)

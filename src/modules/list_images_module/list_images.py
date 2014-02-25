@@ -1,7 +1,7 @@
 import os
 import sys
 import os.path
-sys.path.append("../../../")
+sys.path.append("../../../src/")
 from modules.searcher_module.searcher import Searcher
 from modules.image_modules.imageFile import ImageFile
 from modules.logger_module.logger import Logger
@@ -17,7 +17,7 @@ class ListImages():
 	
 	def __init__(self):
 		self.image_file_types = ['.jpg', '.png', '.bmp']
-                logger_file = Logger()
+                self.logger_file = Logger()
 	
 	def is_file_in_image_scope(self, extension):
 		"""Verify extension is contained in files supported and return a True/False 
