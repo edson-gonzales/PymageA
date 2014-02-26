@@ -17,7 +17,7 @@ class MainWindow():
         main_panel =  self.frame.getContentPane()
         layout = BorderLayout()
         screenSize = Toolkit.getDefaultToolkit().getScreenSize()
-        self.frame.setSize(Dimension(int(screenSize.getWidth()/2), int(screenSize.getHeight()/2)))
+        self.frame.setSize(Dimension(int(screenSize.getWidth()/1.5), int(screenSize.getHeight()/1.5)))
         main_panel.setLayout(layout)
 
 

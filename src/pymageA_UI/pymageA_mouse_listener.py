@@ -47,9 +47,6 @@ class JListMouseListener(ListSelectionListener):
 
     def valueChanged(self,event):
 
-        print "soy evento ",event
-        if event == None:
-            print"error"
         model = self.jlist.getModel()
         if(model.getSize() != 0):
             self.jbutton.setEnabled(True)
@@ -83,38 +80,47 @@ class JListMouseListener(ListSelectionListener):
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 1
-        details_image_text_panel.add(JLabel("Width:"),cConstraints)
+        details_image_text_panel.add(JLabel("Directory"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 1
+        details_image_text_panel.add(JLabel(image_selected.get_file_path()),cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 0
+	cConstraints.gridy = 2
+        details_image_text_panel.add(JLabel("Owner"),cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 1
+	cConstraints.gridy = 2
+        details_image_text_panel.add(JLabel(image_selected.get_file_owner()),cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 0
+	cConstraints.gridy = 3
+        details_image_text_panel.add(JLabel("Width(Pixels)"),cConstraints)
+        cConstraints.fill = GridBagConstraints.NONE
+        cConstraints.gridx = 1
+	cConstraints.gridy = 3
         details_image_text_panel.add(JLabel(str(image_selected.get_file_size_width())),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
-	cConstraints.gridy = 2
-        details_image_text_panel.add(JLabel("Height"),cConstraints)
+	cConstraints.gridy = 4
+        details_image_text_panel.add(JLabel("Height(Pixels)"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
-	cConstraints.gridy = 2
+	cConstraints.gridy = 4
         details_image_text_panel.add(JLabel(str(image_selected.get_file_size_high())),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
-	cConstraints.gridy = 3
+	cConstraints.gridy = 5
         details_image_text_panel.add(JLabel("Size KB"),cConstraints)
         cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
-	cConstraints.gridy = 3
+	cConstraints.gridy = 5
         details_image_text_panel.add(JLabel(str(image_selected.get_size_KB_image())),cConstraints)
         self.jpanel.add(details_image_text_panel)
-
-        #create secondt jpanel to show image
         image_panel = JPanel()
         image_panel.setLayout(BoxLayout( image_panel, BoxLayout.Y_AXIS))
         image_panel.add(Box.createRigidArea(self._spacer_panels))
-        #labelImage = ScaledImageLabel()
-        #image = ImageIO.read(File(image_selected.get_full_path_with_name_image_type()))
-        #labelImage.setIcon(ImageIcon(image))
-        #labelImage = JLabel("mi image")
-        #image_panel.add(labelImage)
         image_panel.add(self.canvas1);
         toolkit = Toolkit.getDefaultToolkit()
         image1 = toolkit.getImage(image_selected.get_full_path_with_name_image_type() )
@@ -122,7 +128,7 @@ class JListMouseListener(ListSelectionListener):
         self.canvas1.repaint()
         self.jpanel.add(image_panel)
         
-        #self.jbutton.setEnabled(True)# To change this template, choose Tools | Templates
+        
 class ModifyImageButtonListener (ActionListener):
     def __init__(self, jlist,jpanel,list_images,jframe):
         ActionListener.__init__(self)
@@ -141,7 +147,13 @@ class ModifyImageButtonListener (ActionListener):
         modify_image_panel = Panel_modifyImage(image_selected,self.jframe)
 
 class MyCanvas (Canvas):
+    """
+    Class to display the image in proyect
+    """
     def MyCanvas(self, img):
+        """
+        Construnctor of class
+        """
         Canvas.__init__(self)
         self.img = img
     def paint (self, g):

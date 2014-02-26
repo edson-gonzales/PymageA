@@ -12,7 +12,9 @@ from java.awt import BorderLayout
 from javax.swing import ListSelectionModel
 from java.awt import FlowLayout
 from java.awt import Dimension
+from javax.swing import ImageIcon
 from java.awt import GridBagLayout
+from java.awt import Font
 from java.awt import GridBagConstraints
 from java.awt import Color
 from javax.swing import JFileChooser
@@ -29,6 +31,7 @@ from modules.searcher_module.search_by_size import SearchDuplicatesBySize
 from javax.swing import JPanel
 from javax.swing import JOptionPane
 
+
 class Panel_pymageA(JPanel):
     _spacer_components = Dimension(2, 2)
     _spacer_panels = Dimension(5, 5)
@@ -44,7 +47,9 @@ class Panel_pymageA(JPanel):
 
 
         self._path = JLabel("")
-        self.button_modify = JButton("Modify")
+        #self.button_modify = JButton("Modify image")
+        self.button_modify = JButton(ImageIcon("icons/modify.png"))
+        self.button_modify.setToolTipText("Click this button to modify the image.")
         self.setLayout(BoxLayout(self, BoxLayout.Y_AXIS))
         self.add(Box.createRigidArea(self._spacer_panels))
         self.listener_mouse =  JListMouseListener(self.list_image,self.details_image_panel,self.list_images_found,self.button_modify,self.south_panel)
@@ -63,16 +68,48 @@ class Panel_pymageA(JPanel):
         layout_path = FlowLayout()
         path_panel.setLayout(layout_path)
         layout_path.setAlignment(FlowLayout.LEFT)
-        path_panel.add(JButton("Search..",actionPerformed = self.search_button_clicked))
+        #self.button_modify = JButton(ImageIcon("icons/modify.png"))
+        #self.button_modify.setToolTipText("Click this button to modify the image.")
+        open_folder_button = JButton("Open Folder..",ImageIcon("icons/folderOpen.png"),actionPerformed = self.search_button_clicked)
+        open_folder_button.setFont(Font("sansserif",Font.BOLD,9))
         
+        open_folder_button.setToolTipText("Click this button select folder to search images.")
+        #path_panel.add(JButton("Open Folder..",ImageIcon("icons/modify.png"),actionPerformed = self.search_button_clicked))
+        path_panel.add(open_folder_button)
         path_panel.add(self._path)
         buttons_panel= JPanel()
         buttons_panel.setLayout(BoxLayout(buttons_panel, BoxLayout.X_AXIS))
         buttons_panel.add(Box.createRigidArea(self._spacer_components))
-        buttons_panel.add(JButton("All Images",actionPerformed = self.option_all_image_button_clicked))
-        buttons_panel.add(JButton("Duplicates Images by Size",actionPerformed = self.option_duplicates_by_size_image_button_clicked))
-        buttons_panel.add(JButton("Duplicates Images by Name", actionPerformed = self.option_duplicates_by_name_image_button_clicked))
-        buttons_panel.add(JButton("Duplicates Images using the root mean squared ", actionPerformed = self.option_duplicates_usign_root_mean_square_button_clicked))
+        all_images_button = JButton("All Images",ImageIcon("icons/searchAll.png"),actionPerformed = self.option_all_image_button_clicked)
+        all_images_button.setFont(Font("sansserif",Font.BOLD,9))
+        all_images_button.setPreferredSize(Dimension(40, 40))
+        all_images_button.setToolTipText("Click this button to search all images with extension jpg, png and bmp.")
+        #buttons_panel.add(JButton("All Images",actionPerformed = self.option_all_image_button_clicked))
+        buttons_panel.add(all_images_button)
+
+        duplicates_images_button = JButton("Duplicates Images by Size",ImageIcon("icons/searchImages.png"),actionPerformed = self.option_duplicates_by_size_image_button_clicked)
+        duplicates_images_button.setFont(Font("sansserif",Font.BOLD,9))
+        duplicates_images_button.setPreferredSize(Dimension(40, 40))
+        duplicates_images_button.setToolTipText("Click this button to search all duplicate images by size with format: jpg, png and bmp.")
+
+        #buttons_panel.add(JButton("Duplicates Images by Size",actionPerformed = self.option_duplicates_by_size_image_button_clicked))
+        buttons_panel.add(duplicates_images_button)
+
+        duplicates_images_name_button = JButton("Duplicates Images by Size",ImageIcon("icons/searchIName.png"),actionPerformed = self.option_duplicates_by_name_image_button_clicked)
+        duplicates_images_name_button.setFont(Font("sansserif",Font.BOLD,9))
+        duplicates_images_name_button.setPreferredSize(Dimension(40, 40))
+        duplicates_images_name_button.setToolTipText("Click this button to search all duplicate images by Name with format: jpg, png and bmp.")
+
+        
+        buttons_panel.add(duplicates_images_name_button)
+
+        duplicates_images_root_button = JButton("Duplicates Images using the root mean squared",ImageIcon("icons/searchIRoot.png"),actionPerformed = self.option_duplicates_usign_root_mean_square_button_clicked)
+        duplicates_images_root_button.setFont(Font("sansserif",Font.BOLD,9))
+        duplicates_images_root_button.setPreferredSize(Dimension(40, 40))
+        duplicates_images_root_button.setToolTipText("Click this button to search all duplicate images using method root mean squared to format: jpg, png and bmp.")
+
+        
+        buttons_panel.add(duplicates_images_root_button)
         north_panel.add(path_panel,BorderLayout.NORTH)
         north_panel.add(buttons_panel,BorderLayout.SOUTH)
         self.add(north_panel,BorderLayout.NORTH)
@@ -93,9 +130,9 @@ class Panel_pymageA(JPanel):
 								(size_of_list_of_folders, lista, list_of_directories)
             
            self.listener_mouse.updateList(self.list_images_found)
-           print"despeus de actular la lista"
+           
            self.listener_mouse_button_modify.updateList(self.list_images_found)
-           print"antes de llenar" + str(len(self.list_images_found))
+           
            for pos in range(len(self.list_images_found)):
                 #self.list_image_model.addImage(self.list_images_found [pos].get_full_path_with_name_image_type())
                 #self.list_image_model.update()
