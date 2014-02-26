@@ -119,17 +119,7 @@ class Logger():
         if self.log_file_exist(self.file_path_name):
             logging.error(error)
         else:
-            print "The log "+ self.name_log + "does not exist in the directory"  
-
-    def set_exception(self, type_exception, message):
-        """
-        this method registered the exception type and the message related in the log, previous verfication if the file log exist.
-        """
-        if self.log_file_exist(self.file_path_name):
-            logging.error("EXCEPTION------- "+ type_exception + " : "+ message)
-        else:
-            print "The log "+ self.name_log + "does not exist in the directory"
-
+            print "The log "+ self.name_log + "does not exist in the directory"     
           
     def search_text_in_log_file(self, text) :
         """
@@ -137,11 +127,10 @@ class Logger():
 
         """
         try:
-            searchfile = (open(self.file_path_name))
-            for line in searchfile:
-                if text in line:
-                    return True
-            searchfile.close()
+            with open(self.file_path_name, 'r') as searchfile:
+                for line in searchfile:
+                    if text in line:
+                        return True  
             return False 
-        except IOError:           
-            print 'The log : ' + self.file_path_name + 'The file does not exist, exiting gracefully'
+        except:           
+            print 'The log : ' + self.file_path_name + 'cannot be opened'

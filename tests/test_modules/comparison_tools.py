@@ -7,10 +7,10 @@ def are_items_equal(list_of_images_expected, list_of_images_obtained):
 		list_of_images_obtained -- A list that contains ImageFile objects 
 		
 		Return:
-		result_and_message -- A list that will contain the boolean value and a message
-							The boolean value will be stored in the first position and the message, 
-							that contains the reason for failure or success will be stored in 
-							the second position.
+		result_and_message -- A list that will contain the a bolean value and a message
+							Boolean value will be stored in the first position and the message, 
+							that contains the reason for failuire or success will be stored in 
+							the second position
 	
 	"""
 	are_equal = True
@@ -23,7 +23,7 @@ def are_items_equal(list_of_images_expected, list_of_images_obtained):
 							not in " + ', '.join(list_of_images_expected)
 	else:
 		are_equal = False
-		message = "Not equal. The length of lists is different"
+		message("Not equal. The length of lists is different")
 	result_and_message = [are_equal, message]
 	return result_and_message
 	
@@ -35,10 +35,10 @@ def is_item_in_list(item, list_of_images_obtained):
 		list_of_images_obtained -- A list of ImageFile objects 
 		
 		Return:
-		result_and_message -- A list that will contain a bolean value and a message.
-							The boolean value will be stored in the first position and the message, 
-							that contains the reason for failure or success will be stored in 
-							the second position.
+		result_and_message -- A list that will contain the a bolean value and a message
+							Boolean value will be stored in the first position and the message, 
+							that contains the reason for failuire or success will be stored in 
+							the second position
 	
 	"""
 	is_item_in_list = False

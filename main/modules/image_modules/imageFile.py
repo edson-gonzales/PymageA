@@ -1,10 +1,8 @@
 import imghdr
+import Image
 import os
 import sys
 import platform
-from manager_image import ManagerImage
-sys.path.append("../../../src/")
-from  modules.logger_module.logger import  Logger
 
 class ImageFile():
 	"""Class ImageFile handles the image files, all operation to image file are described in it"""
@@ -16,14 +14,13 @@ class ImageFile():
 	file_size_high = ''
 	file_size_width = ''
 	file_image_full_path = ''
-	image_file_type = ['.JPG','.BMP','.PNG']  # The supported file types
+	image_file_type = ['JPG','BMP','PNG']  # The supported file types 
 	size_KB_image = ' '
 
 	def __init__(self):
 		self.file_path = "" #root path by default-windows
 		self.max_size = 1000
 		self.min_size = 1
-		self.logger_file = Logger()
 		
 	def verify_image_values(self, full_path_file_image, full_name_file_image): 
 		"""verify if path and name are valid and set the values in object ImageFile 
@@ -43,19 +40,18 @@ class ImageFile():
 
 			split_name_image = os.path.splitext(full_name_file_image)	
 			file_name_image = split_name_image[0]
-			file_type_image = split_name_image[1] #.translate(None, '.')#remove . from extension file
+			file_type_image = split_name_image[1].translate(None, '.')#remove . from extension file
 			self.file_path = os.path.abspath(full_path_file_image)
 			self.file_name = file_name_image
 			self.file_type = file_type_image
 			image_full_path_name = os.path.abspath(full_path_file_image + full_name_file_image)
 			self.file_image_full_path = image_full_path_name
-			new_image = ManagerImage()
+			new_image = Image.open(image_full_path_name)
 			info_file_image = os.stat(image_full_path_name)
 			self.size_KB_image = info_file_image.st_size #size of image file
-			self.set_size_pixels(new_image.size_height(image_full_path_name), new_image.size_width(image_full_path_name))
+			self.set_size_pixels(new_image.size[1], new_image.size[0])
 			self.set_file_onwer(full_path_file_image, full_name_file_image)			
 			return True
-		self.logger_file.set_error("Image:" + full_path_file_image + full_name_file_image + "."+ self.file_type  + " was not created as Object ImageFile")
 		return False
 
 	def set_file_onwer(self, full_path_file_image, full_name_file_image):
@@ -67,10 +63,8 @@ class ImageFile():
 		"""
 		if (platform.system() == "Linux"):
 			self.set_file_owner_in_platform_linux(full_path_file_image, full_name_file_image)
-			self.logger_file.set_info("set owner plataform Linux")
 		if platform.system() == 'Windows' :
 			self.set_file_owner_in_platform_Windows(full_path_file_image, full_name_file_image)
-			self.logger_file.set_info("set owner plataform Windows")
 
 	def set_file_owner_in_platform_linux(self, full_path_file_image, full_name_file_image):
 		""" Set owner to imageFile  when project is running in platform Linux
@@ -109,7 +103,7 @@ class ImageFile():
 			file_info.close()
 			os.remove(new_name)
 		except IOError:
-				self.logger_file.set_error("File cannot open" + new_name)
+				print("File cannot open" + new_name)
 
 	def is_valid_image(self,full_path_file_image,full_name_file_image):
 		"""Validate the image file and path and return a True/False 
@@ -126,16 +120,15 @@ class ImageFile():
 		"""
 		full_path_image = full_path_file_image + full_name_file_image
 		if os.path.isfile(full_path_image):#file exist		
-			split_name_image = os.path.splitext(full_name_file_image)
-                        extension=split_name_image[1]
-                                                
-			if (self.is_image_type_valid(extension)) == True:
+			split_name_image = os.path.splitext(full_name_file_image)	
+			file_type_image = split_name_image[1].translate(None, '.')
+			if (self.is_image_type_valid(file_type_image)) == True: 
 				return True
 		return False
 
 	def get_complete_image_with_type(self):
 		"""Return the name and extension of image"""
-		return (self.get_file_name() + self.get_file_type())
+		return (self.get_file_name() + "." + self.get_file_type())
 
 	def get_full_path_with_name_image_type(self):
 		"""Return location(path) and name.extension of image"""
@@ -237,10 +230,13 @@ class ImageFile():
 		False: If new sizes are not valid and the image is not resized
 		"""
 		if (self.is_valid_size_image(new_width_image, new_high_image) == True):
-                        #create an object mangerImage
-                        image_resize = ManagerImage()
-                        image_resize.resize_image(self.file_image_full_path, new_width_image, new_high_image, self.file_type)
-                        return True
+			image_Change_size = Image.open(self.file_image_full_path)
+			image_Change_size = image_Change_size.resize((new_width_image, new_high_image), Image.ANTIALIAS)
+			try:
+				image_Change_size.save(os.path.abspath(self.file_image_full_path))
+			except Excpetion as e:
+				print e + "An error has occured while saving images"
+			return True
 		return False
 
 	def is_valid_size_image(self, new_width_image, new_high_image):
@@ -270,20 +266,17 @@ class ImageFile():
 
 		"""
 		if (self.is_valid_angle_image(angle_to_rotate)):
-                        #create an object mangerImage
-                        image_rotate = ManagerImage()
-                        image_rotate.rotate_image(self.file_image_full_path, angle_to_rotate,  self.file_type)
+			image_rotate = Image.open(self.file_image_full_path)
+			image_rotate = image_rotate.rotate(angle_to_rotate)
+			try:
+				image_rotate.save(self.file_image_full_path)
+			except Exception as e:
+				print e + "An error occured while saving the image"
 			return True
 
 		return False
 
-	def __str__(self):
-            """
-            return full_path and name of image
-            """
-            return self.get_full_path_with_name_image_type()
-        
-        def is_valid_angle_image(self, angle):
+	def is_valid_angle_image(self, angle):
 		""" Verify if the angle is a integer value and is in proper range: 0 ..180
 		Return
 		True: if the angle is valid
@@ -293,12 +286,3 @@ class ImageFile():
 		if (-180 <= angle <=180 and type(angle) == int):
 			return True
 		return False
-
-
-        def convert_to_other_format(self, new_format):
-            """ Conver the image to other format or file type
-            Keyword arguments:
-		new_format: new format to convert the image
-            """
-            image_convert = ManagerImage()
-            image_convert.convert_image(self.get_full_path_with_name_image_type(), os.path.join(self.get_file_path(), self.get_file_name()+"."+new_format), new_format)

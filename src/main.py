@@ -3,6 +3,7 @@ from javax.swing import JPanel
 from javax.swing import JButton
 from java.awt import BorderLayout
 from java.awt import FlowLayout
+from java.awt import Toolkit
 from java.awt import Dimension
 from pymageA_UI.panel_pymageA import Panel_pymageA
 
@@ -15,11 +16,12 @@ class MainWindow():
         self.frame = JFrame("PymageA",defaultCloseOperation= JFrame.EXIT_ON_CLOSE)
         main_panel =  self.frame.getContentPane()
         layout = BorderLayout()
-        self.frame.setSize(Dimension(900,400))
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize()
+        self.frame.setSize(Dimension(int(screenSize.getWidth()/2), int(screenSize.getHeight()/2)))
         main_panel.setLayout(layout)
 
 
-    def show_windows(self):
+    def show_window(self):
         self.frame.setVisible(True)
 
     def create_tool_bar(self):
@@ -35,11 +37,8 @@ class MainWindow():
 
 
     def create_center_panel(self):
-        center_panel = Panel_pymageA()
+        center_panel = Panel_pymageA(self.frame)
         self.frame.getContentPane().add(center_panel, BorderLayout.CENTER)
-
-
-
 
 
 
@@ -47,4 +46,7 @@ class MainWindow():
 if __name__ == "__main__":
     window = MainWindow()
     window.initilialize_ui()
-    window.show_windows()
+    window.show_window()
+
+
+

@@ -3,8 +3,12 @@ from java.awt import *
 from java.awt.image import *
 from java.io import *
 from java.lang.Math import *
+import sys
+sys.path.append("../../../")
+from  modules.logger_module.logger import  Logger
 
 class ManagerImage:
+    logger_file = Logger()
 
     def resize_image(self,input_file, width, height,type_image):
         """ Modify image with new sizes in pixels 
@@ -37,6 +41,7 @@ class ManagerImage:
         # The second argument is the image file type, So i got the extension of the output file and passed it
         # The next argument is the FileOutputStream to where the resized image is to be written.
         ImageIO.write(buffered_image_type_image, type_image , FileOutputStream(output_file))
+        self.logger_file.set_info("The image" + input_file + " was resized.")
 
 
     def rotate_image(self, input_file, angle, type_image):
@@ -65,6 +70,7 @@ class ManagerImage:
         # The second argument is the image file type, So i got the extension of the output file and passed it
         # The next argument is the FileOutputStream to where the resized image is to be written.
         ImageIO.write(image_to_rotate, type_image, FileOutputStream(input_file))
+        self.logger_file.set_info("The image" + input_file + " was rotated")
 
 
     def size_width(self, input_file):
@@ -80,3 +86,23 @@ class ManagerImage:
         # Get the BufferedImage object by reading the image from the given input stream
         image_info = ImageIO.read(FileInputStream(input_file))
         return image_info.getHeight()
+
+    def convert_image(self, input_file, output_file, new_format):
+        """
+        Convert the image to other format
+        Keyword arguments:
+		input_file: original image file
+                output_file: new image file
+                new_format: format of image
+        """
+        
+        # Get the BufferedImage object by reading the image from the given input stream
+        buffered_image = ImageIO.read(FileInputStream(input_file))
+        #/ create a blank, RGB, same width and height, and a white background
+	newBufferedImage = BufferedImage(buffered_image.getWidth(),
+			buffered_image.getHeight(), BufferedImage.TYPE_INT_RGB)
+	newBufferedImage.createGraphics().drawImage(buffered_image, 0, 0, Color.WHITE, None)
+        newBufferedImage.createGraphics().dispose()
+
+	#write to type file
+	ImageIO.write(newBufferedImage, new_format, FileOutputStream(output_file))
