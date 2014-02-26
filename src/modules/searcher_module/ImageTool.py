@@ -16,9 +16,9 @@ class ImageCalculator:
 
 	_image = None
 	size = 0
-	image_width = 0
+        image_width = 0
 	image_height = 0
-
+	
 	#
 	# Constructs a Histogram for an image.
 	#
@@ -27,7 +27,7 @@ class ImageCalculator:
 		buffered_image = ImageIO.read(FileInputStream(input_path))
 		self._image = buffered_image
 		self.size = os.stat(input_path)
-		self.image_width = self._image.getWidth(None)
+                self.image_width = self._image.getWidth(None)
 		self.image_height = self._image.getHeight(None)
 		
 	def get_image(self):
@@ -87,14 +87,8 @@ def rmsdiff_2011(image_a, image_b):
 		hist_diff[i] = abs(histogram_a[i] - histogram_b[i])
 
 	sq = (value**2 for idx, value in enumerate(hist_diff))
-	#print "The sq", list(sq)
 	sum_of_squares = sum(sq)
-	print "the sum of squares",  sum_of_squares
-	
-	#rms = math.sqrt(sum_of_squares/float(image_a.size[0] * image_a.size[1]))
 	rms = math.sqrt(sum_of_squares/float(image_a.image_width * image_a.image_height))
-	#rms = math.sqrt(sum_of_squares/float(len(hist_diff)))
-	print "The rms value", rms
 	return rms
 
 #
@@ -122,13 +116,13 @@ def histogram_compare(image_a, image_b, alpha = .01):
     return False
 
 # The first argument is the input file
-input_file = "D://Imagenes//17.jpg"
+#input_file = "D:\\pymage\\tests\\test_modules\\images_test_duplicates3\\equipo.png"
 
 # Take the output file
-input_file2 = "D://Imagenes//14.jpg"
+#input_file2 = "D:\\pymage\\tests\\test_modules\\images_test_duplicates3\\balon.jpg"
 
-it1 = ImageCalculator(input_file)
-it2 = ImageCalculator(input_file2)
+#it1 = ImageCalculator(input_file)
+#it2 = ImageCalculator(input_file2)
 
-print histogram_compare(it1, it2)
-print rmsdiff_2011(it1, it2)
+#print histogram_compare(it1, it2)
+#print rmsdiff_2011(it1, it2)

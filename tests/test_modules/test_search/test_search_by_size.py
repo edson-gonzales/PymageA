@@ -2,10 +2,10 @@ import unittest
 import sys
 import os.path
 
-sys.path.append("../../")
-from main.modules.image_modules.imageFile import ImageFile
-from main.modules.searcher_module.search_by_size import SearchDuplicatesBySize
-from main.modules.list_images_module.list_images import ListImages
+sys.path.append("../../../")
+from src.modules.image_modules.imageFile import ImageFile
+from src.modules.searcher_module.search_by_size import SearchDuplicatesBySize
+from src.modules.list_images_module.list_images import ListImages
 from tests.test_modules.comparison_tools import *
 
 class TestSearchBySize(unittest.TestCase):
@@ -67,3 +67,6 @@ class TestSearchBySize(unittest.TestCase):
 		
 		list_of_images_dupes_by_name = self.search_by_size.search_duplicates(list_of_images_obtained)
 		self.search_by_size.show_path_of_duplicated_images()
+
+if __name__ == "__main__":
+    unittest.main()

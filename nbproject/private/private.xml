@@ -2,14 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="false"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/pymage/src/modules/image_modules/imageFile.py</file>
+            <file>file:/D:/pymage/tests/test_modules/test_search/test_search_by_rms.py</file>
             <file>file:/D:/pymage/src/main.py</file>
-            <file>file:/D:/pymage/src/pymageA_UI/list_model.py</file>
-            <file>file:/D:/pymage/src/pymageA_UI/dialog_pymageA.py</file>
-            <file>file:/D:/pymage/src/pymageA_UI/image_pymageUI.py</file>
-            <file>file:/D:/pymage/src/pymageA_UI/panel_pymageA.py</file>
+            <file>file:/D:/pymage/tests/test_modules/test_search/test_search_by_name.py</file>
+            <file>file:/D:/pymage/tests/test_modules/test_search/test_search_by_size.py</file>
+            <file>file:/D:/pymage/src/modules/searcher_module/general_search.py</file>
+            <file>file:/D:/pymage/src/modules/searcher_module/ImageTool.py</file>
+            <file>file:/D:/pymage/src/modules/searcher_module/search_by_name.py</file>
             <file>file:/D:/pymage/tests/test_modules/test_list_images/test_list_images.py</file>
+            <file>file:/D:/pymage/src/modules/searcher_module/search_by_rms.py</file>
         </group>
     </open-files>
 </project-private>

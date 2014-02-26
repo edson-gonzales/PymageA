@@ -4,10 +4,10 @@ import os.path
 import shutil
 
 sys.path.append("../../../")
-from modules.list_images_module.list_images import ListImages
-from modules.searcher_module.search_by_name import SearchDuplicatesByName
-from modules.searcher_module.search_by_size import SearchDuplicatesBySize
-from modules.image_modules.imageFile import ImageFile
+from src.modules.list_images_module.list_images import ListImages
+from src.modules.searcher_module.search_by_name import SearchDuplicatesByName
+from src.modules.searcher_module.search_by_size import SearchDuplicatesBySize
+from src.modules.image_modules.imageFile import ImageFile
 from tests.test_modules.comparison_tools import *
 
 class TestListImages(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestListImages(unittest.TestCase):
 	def setUp(self):
 		self.list_images = ListImages()
 		self.test_path = os.getcwd()
-		self.message = ""
+                self.message = ""
 	
 	def test_list_images_in_specified_scope_of_specified_directory(self):
 		list_of_images = []
@@ -123,3 +123,5 @@ class TestListImages(unittest.TestCase):
 		result_and_message = are_items_equal(duplicated_images, list_of_images_to_look_for)
 		self.assertTrue(result_and_message[0], result_and_message[1])
 
+if __name__ == "__main__":
+    unittest.main()

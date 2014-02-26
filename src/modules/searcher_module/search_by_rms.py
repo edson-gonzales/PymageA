@@ -1,7 +1,6 @@
 from general_search import GeneralSearch
-import Image
-import ImageChops
-import math
+from ImageTool import *
+
 
 class SearchDuplicatesByRMS(GeneralSearch):
 	
@@ -17,21 +16,19 @@ class SearchDuplicatesByRMS(GeneralSearch):
 								It will Return False if the size of both images is not the same
 		"""
 		
-		"Calculate the root-mean-square difference between two images"
-		new_image_one = Image.new("RGB", (first_image.get_file_size_width(),first_image.get_file_size_high ()))
-		new_image_two = Image.new("RGB",(second_image.get_file_size_width(), second_image.get_file_size_high ()))
-		diff = ImageChops.difference(new_image_one, new_image_two)
-		h = diff.histogram()
-		sq = (value*(idx**2) for idx, value in enumerate(h))
-		sum_of_squares = sum(sq)
-		rms = math.sqrt(sum_of_squares/float(new_image_one.size[0] * new_image_two.size[1]))
+		images_are_the_same = False
 		
-		print "The rms value", rms
+		input_file = first_image.get_full_path_with_name_image_type()
+		input_file2 = second_image.get_full_path_with_name_image_type()
+                
+
+		image_to_compare_1 = ImageCalculator(input_file)
+		image_to_compare_2 = ImageCalculator(input_file2)
+
+		#print histogram_compare(it1, it2)
+		rms_value = rmsdiff_2011(image_to_compare_1, image_to_compare_2)
+				
+		if (rms_value == 0):
+			images_are_the_same = True
 		
-		if (rms < 500):
-			self.images_are_the_same = True
-		else:
-			self.images_are_the_same = False
-		
-		return self.images_are_the_same
-		
+		return images_are_the_same	
