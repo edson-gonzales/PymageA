@@ -4,6 +4,9 @@ from javax.swing import ListCellRenderer
 from javax.swing import ImageIcon
 
 class GeneratedListModel (AbstractListModel):
+    """
+    Define the list model to use, using images
+    """
     def __init__(self):
  	    #self.panelA = panelA
             AbstractListModel.__init__(self)
@@ -18,6 +21,9 @@ class GeneratedListModel (AbstractListModel):
         self.fireContentsChanged(self, 0,self.getSize())
 
 class ImageRenderer (ListCellRenderer):
+    """
+    Displays the image in the south pane.
+    """
     def getListCellRendererComponent(self, list,image_found,index, isSelected, cellHasFocus):
 
         ListCellRenderer.__getListCellRendererComponent__(list,image_found,index, isSelected, cellHasFocus)

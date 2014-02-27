@@ -4,7 +4,7 @@ import sys
 import platform
 from manager_image import ManagerImage
 sys.path.append("../../../src/")
-from  modules.logger_module.logger import  Logger
+#from  modules.logger_module.logger import  Logger
 
 class ImageFile():
 	"""Class ImageFile handles the image files, all operation to image file are described in it"""
@@ -23,7 +23,7 @@ class ImageFile():
 		self.file_path = "" #root path by default-windows
 		self.max_size = 1000
 		self.min_size = 1
-		self.logger_file = Logger()
+		#self.logger_file = Logger()
 		
 	def verify_image_values(self, full_path_file_image, full_name_file_image): 
 		"""verify if path and name are valid and set the values in object ImageFile 
@@ -41,21 +41,23 @@ class ImageFile():
 			full_path_file_image = full_path_file_image + '/'
 		if (self.is_valid_image(full_path_file_image, full_name_file_image) == True):
 
-			split_name_image = os.path.splitext(full_name_file_image)	
+			
+                        split_name_image = os.path.splitext(full_name_file_image)
 			file_name_image = split_name_image[0]
 			file_type_image = split_name_image[1] #.translate(None, '.')#remove . from extension file
 			self.file_path = os.path.abspath(full_path_file_image)
 			self.file_name = file_name_image
 			self.file_type = file_type_image
 			image_full_path_name = os.path.abspath(full_path_file_image + full_name_file_image)
-			self.file_image_full_path = image_full_path_name
+			self.file_image_full_path = image_full_path_name                        
 			new_image = ManagerImage()
-			info_file_image = os.stat(image_full_path_name)
-			self.size_KB_image = info_file_image.st_size #size of image file
-			self.set_size_pixels(new_image.size_height(image_full_path_name), new_image.size_width(image_full_path_name))
-			self.set_file_onwer(full_path_file_image, full_name_file_image)			
+                        info_file_image = os.stat(image_full_path_name)
+			self.size_KB_image = info_file_image.st_size #size of image file                        
+			self.set_size_pixels(new_image.size_height(image_full_path_name), new_image.size_width(image_full_path_name))                        
+			self.set_file_onwer(full_path_file_image, full_name_file_image)
 			return True
-		self.logger_file.set_error("Image:" + full_path_file_image + full_name_file_image + "."+ self.file_type  + " was not created as Object ImageFile")
+		#self.logger_file.set_error("Image:" + full_path_file_image + full_name_file_image + "."+ self.file_type  + " was not created as Object ImageFile")
+                
 		return False
 
 	def set_file_onwer(self, full_path_file_image, full_name_file_image):
@@ -65,12 +67,17 @@ class ImageFile():
 		full_path_file_image -- path were image is located
 		full_name_file_image -- file name image (with extension) 
 		"""
-		if (platform.system() == "Linux"):
+                info_system = []                
+                #info_system = platform.java_ver()                
+                platform = 'Windows 7' #info_system[2][0]
+		#if (platform.system() == "Linux" or int(platform.find('Lin'))>-1):
+                if int(platform.find('Lin'))>-1:                        
 			self.set_file_owner_in_platform_linux(full_path_file_image, full_name_file_image)
-			self.logger_file.set_info("set owner plataform Linux")
-		if platform.system() == 'Windows' :
+			#self.logger_file.set_info("set owner plataform Linux")
+		#if platform.system() == 'Windows' or int(platform.find('Win'))>-1:
+                if int(platform.find('Win'))>-1:                        
 			self.set_file_owner_in_platform_Windows(full_path_file_image, full_name_file_image)
-			self.logger_file.set_info("set owner plataform Windows")
+			#self.logger_file.set_info("set owner plataform Windows")
 
 	def set_file_owner_in_platform_linux(self, full_path_file_image, full_name_file_image):
 		""" Set owner to imageFile  when project is running in platform Linux
@@ -94,22 +101,26 @@ class ImageFile():
 		"""
 		if full_path_file_image.endswith('/') == True or full_path_file_image.endswith('\\') == True:
 				full_path_file_image = full_path_file_image[:-1]
-		full_path_file_image = os.path.abspath(full_path_file_image)
-		mypath = os.path.dirname(os.path.abspath(__file__))
-		new_name = os.path.dirname(os.path.abspath(__file__)) + '/delete' + full_name_file_image + '.txt'
-		new_name = os.path.abspath (new_name)
+		full_path_file_image = os.path.abspath(full_path_file_image)                
+		mypath = os.path.dirname(os.path.abspath(__file__))            
+		new_name = os.path.dirname(os.path.abspath(__file__)) + '/delete' + full_name_file_image + '.txt'                
+		new_name = os.path.abspath (new_name)                
 		command_windows = 'dir /q "'  + full_path_file_image + '\\' + full_name_file_image + '">' +\
-                        '"'+new_name+'"'
-		info_file = os.system(command_windows)
+                        '"'+new_name+'"'                
+                self.file_owner = ' '
+		info_file = os.system(command_windows)                
+                
 		try:
 			file_info = open(new_name)
 			lines = file_info.readlines()
 			info_file_owner = (lines[5].rstrip("\n")).split(' ')
-			self.file_owner = (info_file_owner[len(info_file_owner) - 2]).split("\\")
-			file_info.close()
-			os.remove(new_name)
+			file_owner1 = (info_file_owner[len(info_file_owner) - 2]).split("\\")
+                        self.file_owner = file_owner1[1]
+			file_info.close()                        
+			os.remove(new_name)                        
 		except IOError:
-				self.logger_file.set_error("File cannot open" + new_name)
+                                print "error"                                
+				#self.logger_file.set_error("File cannot open" + new_name)                
 
 	def is_valid_image(self,full_path_file_image,full_name_file_image):
 		"""Validate the image file and path and return a True/False 
@@ -238,8 +249,8 @@ class ImageFile():
 		"""
 		if (self.is_valid_size_image(new_width_image, new_high_image) == True):
                         #create an object mangerImage
-                        image_resize = ManagerImage()
-                        image_resize.resize_image(self.file_image_full_path, new_width_image, new_high_image, self.file_type)
+                        image_resize = ManagerImage()                        
+                        image_resize.resize_image(self.file_image_full_path, new_width_image, new_high_image, self.get_file_type())
                         return True
 		return False
 
@@ -272,7 +283,7 @@ class ImageFile():
 		if (self.is_valid_angle_image(angle_to_rotate)):
                         #create an object mangerImage
                         image_rotate = ManagerImage()
-                        image_rotate.rotate_image(self.file_image_full_path, angle_to_rotate,  self.file_type)
+                        image_rotate.rotate_image(self.file_image_full_path, angle_to_rotate,  self.get_file_type())
 			return True
 
 		return False

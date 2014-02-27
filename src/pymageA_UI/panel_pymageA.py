@@ -28,14 +28,39 @@ from pymageA_mouse_listener import ModifyImageButtonListener
 from javax.swing import DefaultListModel
 from modules.searcher_module.search_by_name import SearchDuplicatesByName
 from modules.searcher_module.search_by_size import SearchDuplicatesBySize
+from modules.searcher_module.search_by_rms import SearchDuplicatesByRMS
 from javax.swing import JPanel
 from javax.swing import JOptionPane
 
 
 class Panel_pymageA(JPanel):
+    """
+    helps to define the central pane
+    Keyword arguments:
+    _spacer_components -- private attribute used to define the spaces between components.
+    _spacer_panels -- private attribute used to define the space between panes
+    """
     _spacer_components = Dimension(2, 2)
     _spacer_panels = Dimension(5, 5)
     def __init__(self,jframe):
+        """
+        initialize the pane
+
+        Keyword arguments:
+        list_image_model -- it is and isntance of DefaultListModel, helps to define the
+                            how will be the list, e.g Single selection
+
+        list_image  -- it is the list itself
+        details_image_panel  -- create other pane where the details of the image
+                           will be displayed
+        south_panel--- create other pane where the image and the modify option will
+                        be displayed
+        list_images_found  -- it will return the list of the images for the moment
+                            it is empty
+         _path  -- private attribute here will be displayed the path selected to
+                  find the images.
+
+        """
         JPanel.__init__(self)
         self.jframe = jframe
         self.list_image_model = DefaultListModel()
@@ -44,10 +69,7 @@ class Panel_pymageA(JPanel):
         self.details_image_panel =  JPanel()
         self.south_panel = JPanel()
         self.list_images_found = []
-
-
-        self._path = JLabel("")
-        #self.button_modify = JButton("Modify image")
+        self._path = JLabel("")        
         self.button_modify = JButton(ImageIcon("icons/modify.png"))
         self.button_modify.setToolTipText("Click this button to modify the image.")
         self.setLayout(BoxLayout(self, BoxLayout.Y_AXIS))
@@ -58,57 +80,50 @@ class Panel_pymageA(JPanel):
         self.center_panel() #image panel
         self.south_panel_p() #details_panel
 
-
-
     def north_panel(self):
+        """
+        Help to define the north pane where is located direcotry and buttons panel to search images
+        """
+        # setting the pane with boders and rigid area
         north_panel = JPanel()
         north_panel.setLayout(BoxLayout(north_panel, BoxLayout.Y_AXIS))
         north_panel.add(Box.createRigidArea(self._spacer_panels))
+        #Adding a pane where the button to select a directory and the label where
+        # the path selected will be displayed
         path_panel = JPanel()
         layout_path = FlowLayout()
         path_panel.setLayout(layout_path)
-        layout_path.setAlignment(FlowLayout.LEFT)
-        #self.button_modify = JButton(ImageIcon("icons/modify.png"))
-        #self.button_modify.setToolTipText("Click this button to modify the image.")
+        layout_path.setAlignment(FlowLayout.LEFT)        
         open_folder_button = JButton("Open Folder..",ImageIcon("icons/folderOpen.png"),actionPerformed = self.search_button_clicked)
         open_folder_button.setFont(Font("sansserif",Font.BOLD,9))
         
-        open_folder_button.setToolTipText("Click this button select folder to search images.")
-        #path_panel.add(JButton("Open Folder..",ImageIcon("icons/modify.png"),actionPerformed = self.search_button_clicked))
+        open_folder_button.setToolTipText("Click this button select folder to search images.")        
         path_panel.add(open_folder_button)
         path_panel.add(self._path)
+        # other pane, for manage the buttons
         buttons_panel= JPanel()
         buttons_panel.setLayout(BoxLayout(buttons_panel, BoxLayout.X_AXIS))
         buttons_panel.add(Box.createRigidArea(self._spacer_components))
+        #defining buttons with icon  and tooltip
         all_images_button = JButton("All Images",ImageIcon("icons/searchAll.png"),actionPerformed = self.option_all_image_button_clicked)
         all_images_button.setFont(Font("sansserif",Font.BOLD,9))
         all_images_button.setPreferredSize(Dimension(40, 40))
-        all_images_button.setToolTipText("Click this button to search all images with extension jpg, png and bmp.")
-        #buttons_panel.add(JButton("All Images",actionPerformed = self.option_all_image_button_clicked))
+        all_images_button.setToolTipText("Click this button to search all images with extension jpg, png and bmp.")        
         buttons_panel.add(all_images_button)
-
         duplicates_images_button = JButton("Duplicates Images by Size",ImageIcon("icons/searchImages.png"),actionPerformed = self.option_duplicates_by_size_image_button_clicked)
         duplicates_images_button.setFont(Font("sansserif",Font.BOLD,9))
         duplicates_images_button.setPreferredSize(Dimension(40, 40))
-        duplicates_images_button.setToolTipText("Click this button to search all duplicate images by size with format: jpg, png and bmp.")
-
-        #buttons_panel.add(JButton("Duplicates Images by Size",actionPerformed = self.option_duplicates_by_size_image_button_clicked))
+        duplicates_images_button.setToolTipText("Click this button to search all duplicate images by size with format: jpg, png and bmp.")        
         buttons_panel.add(duplicates_images_button)
-
         duplicates_images_name_button = JButton("Duplicates Images by Size",ImageIcon("icons/searchIName.png"),actionPerformed = self.option_duplicates_by_name_image_button_clicked)
         duplicates_images_name_button.setFont(Font("sansserif",Font.BOLD,9))
         duplicates_images_name_button.setPreferredSize(Dimension(40, 40))
         duplicates_images_name_button.setToolTipText("Click this button to search all duplicate images by Name with format: jpg, png and bmp.")
-
-        
         buttons_panel.add(duplicates_images_name_button)
-
         duplicates_images_root_button = JButton("Duplicates Images using the root mean squared",ImageIcon("icons/searchIRoot.png"),actionPerformed = self.option_duplicates_usign_root_mean_square_button_clicked)
         duplicates_images_root_button.setFont(Font("sansserif",Font.BOLD,9))
         duplicates_images_root_button.setPreferredSize(Dimension(40, 40))
-        duplicates_images_root_button.setToolTipText("Click this button to search all duplicate images using method root mean squared to format: jpg, png and bmp.")
-
-        
+        duplicates_images_root_button.setToolTipText("Click this button to search all duplicate images using method root mean squared to format: jpg, png and bmp.")        
         buttons_panel.add(duplicates_images_root_button)
         north_panel.add(path_panel,BorderLayout.NORTH)
         north_panel.add(buttons_panel,BorderLayout.SOUTH)
@@ -121,43 +136,49 @@ class Panel_pymageA(JPanel):
            if(self.list_image_model.getSize()!= 0):
                self.list_image.model.removeAllElements()
            listImage = ListImages()
-           list_of_directories = listImage.get_all_nested_directories(self._path.getText())
-           print "despues de lo directorios"
-           size_of_list_of_folders = len(list_of_directories)
-           print "despues del tamnanio"
+           list_of_directories = listImage.get_all_nested_directories(self._path.getText())           
+           size_of_list_of_folders = len(list_of_directories)           
            lista= []
            self.list_images_found = listImage.get_all_images_from_directory \
-								(size_of_list_of_folders, lista, list_of_directories)
-            
+								(size_of_list_of_folders, lista, list_of_directories)           
            self.listener_mouse.updateList(self.list_images_found)
            
            self.listener_mouse_button_modify.updateList(self.list_images_found)
            
-           for pos in range(len(self.list_images_found)):
-                #self.list_image_model.addImage(self.list_images_found [pos].get_full_path_with_name_image_type())
-                #self.list_image_model.update()
+           for pos in range(len(self.list_images_found)):                
                 self.list_image_model.addElement(str(self.list_images_found [pos]))
         else:
             JOptionPane.showMessageDialog(None,"Select a path to start the search for image files","Incorect Path", JOptionPane.ERROR_MESSAGE )
                 
 
     def option_duplicates_by_size_image_button_clicked(self, event):
+
+        """
+        Compare if the size is the same for images given, and return the duplicates
+        """
+        # verify if the path is not empty
         if self._path.getText()!='':
+            #Clean the list if it contains images displayed
             if(self.list_image_model.getSize() != 0):
                 self.list_image_model.removeAllElements()
+            # create ListImages object
             listImage = ListImages()
+            # clean up the list
             self.list_image_model.clear()
             list_of_images = []
             list_of_directories = listImage.get_all_nested_directories(self._path.getText())
+            # get the len of the images
             size_of_list_of_folders = len(list_of_directories)
             search_type = SearchDuplicatesBySize()
-            #self.list_image_found = listImage.SearchDuplicatesByName()
+            # obtain the image duplicates by size
             self.list_images_found = listImage.search_images_in_path \
 									(self._path.getText(), search_type, size_of_list_of_folders, \
 									list_of_images, list_of_directories)
 
+            #   with the list of duplicates obtained sent to update the List in the UI
             self.listener_mouse.updateList(self.list_images_found)
             self.listener_mouse_button_modify.updateList(self.list_images_found)
+            # display the list
             for pos in range(len(self.list_images_found)):
                self.list_image_model.addElement(str(self.list_images_found [pos]))
         else:
@@ -176,8 +197,7 @@ class Panel_pymageA(JPanel):
             list_of_images = []
             list_of_directories = listImage.get_all_nested_directories(self._path.getText())
             size_of_list_of_folders = len(list_of_directories)
-            search_type = SearchDuplicatesByName()
-            #self.list_image_found = listImage.SearchDuplicatesByName()
+            search_type = SearchDuplicatesByName()            
             self.list_images_found = listImage.search_images_in_path \
 									(self._path.getText(), search_type, size_of_list_of_folders, \
 									list_of_images, list_of_directories)
@@ -191,6 +211,24 @@ class Panel_pymageA(JPanel):
                 
     def option_duplicates_usign_root_mean_square_button_clicked(self, event):
         if self._path.getText()!='':
+            if(self.list_image_model.getSize() != 0):
+                self.list_image_model.removeAllElements()
+            listImage = ListImages()
+            search_by_rms = SearchDuplicatesByRMS()
+            self.list_image_model.clear()
+            list_of_images = []
+            list_of_images_obtained = []
+            list_of_directories = listImage.get_all_nested_directories(self._path.getText())
+            size_of_list_of_folders = len(list_of_directories)            
+            list_of_images_obtained = listImage.get_all_images_from_directory \
+								(size_of_list_of_folders, list_of_images, list_of_directories)            
+            self.list_images_found = search_by_rms.search_duplicates(list_of_images_obtained)
+            self.listener_mouse.updateList(self.list_images_found)
+            self.listener_mouse_button_modify.updateList(self.list_images_found)
+            for pos in range(len(self.list_images_found)):
+               self.list_image_model.addElement(str(self.list_images_found [pos]))
+
+               
             pass
         else:
             JOptionPane.showMessageDialog(None,"Select a path to start the search for image files","Incorect Path", JOptionPane.ERROR_MESSAGE )
@@ -233,10 +271,11 @@ class Panel_pymageA(JPanel):
         self.south_panel.add(Box.createRigidArea(self._spacer_panels))
         self.details_image()
         self.add(self.south_panel,BorderLayout.SOUTH)
-        #self.south_panel.setVisible(False)
-        #self.details_image.setVisible(false)
 
     def details_image(self):
+        """
+        Add to South panel the button modify for the moment it is disabled
+        """
         #self.details_image_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Details Image"))
         self.details_image_panel.setLayout(BoxLayout(self.details_image_panel, BoxLayout.X_AXIS))
         self.details_image_panel.add(Box.createRigidArea(self._spacer_panels))

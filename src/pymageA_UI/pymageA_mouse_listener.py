@@ -46,7 +46,10 @@ class JListMouseListener(ListSelectionListener):
         self.list_images = list_images
 
     def valueChanged(self,event):
-
+        """
+        When value in Jlist is changed diferents actions are performed to display
+        the details of image selected
+        """
         model = self.jlist.getModel()
         if(model.getSize() != 0):
             self.jbutton.setEnabled(True)
@@ -63,10 +66,15 @@ class JListMouseListener(ListSelectionListener):
         
 
     def show_details_image(self,image_selected):
+        """
+        Show the details of the image selected in the JList in the south pane
+        """
+
         details_image_text_panel = JPanel()
         details_image_text_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Details Image"))
-        details_image_text_panel.setLayout(GridBagLayout())
+        details_image_text_panel.setLayout(GridBagLayout())        
         cConstraints = GridBagConstraints()
+        cConstraints.anchor = GridBagConstraints.WEST
         cConstraints.weightx = 0.1
         cConstraints.weighty = 0.1
         cConstraints.fill = GridBagConstraints.NONE
@@ -77,11 +85,11 @@ class JListMouseListener(ListSelectionListener):
         cConstraints.gridx = 1
 	cConstraints.gridy = 0
         details_image_text_panel.add(JLabel(image_selected.get_complete_image_with_type()),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
+        #cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 1
         details_image_text_panel.add(JLabel("Directory"),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
+        #cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 1
         details_image_text_panel.add(JLabel(image_selected.get_file_path()),cConstraints)
@@ -130,17 +138,28 @@ class JListMouseListener(ListSelectionListener):
         
         
 class ModifyImageButtonListener (ActionListener):
+    """
+    Help to define the actions after an action is executed
+    """
     def __init__(self, jlist,jpanel,list_images,jframe):
+
         ActionListener.__init__(self)
         self._spacer_panels = Dimension(5, 5)
         self.jlist = jlist
         self.jframe = jframe
         self.jpanel = jpanel
         self.list_images = []
+
     def updateList(self,list_images):
+        """
+        populate the Jlist with the list of images
+        """
         self.list_images = list_images
         
     def actionPerformed(self, event):
+        """
+        after an image is selected the sout pane is enabled and display  the image information
+        """
         selections = self.jlist.getSelectedIndex()
         image_selected = ImageFile()
         image_selected = self.list_images[selections]
@@ -148,7 +167,7 @@ class ModifyImageButtonListener (ActionListener):
 
 class MyCanvas (Canvas):
     """
-    Class to display the image in proyect
+    Class to display the image selected in JList, it is displaye in south pane
     """
     def MyCanvas(self, img):
         """
@@ -157,6 +176,9 @@ class MyCanvas (Canvas):
         Canvas.__init__(self)
         self.img = img
     def paint (self, g):
+        """
+        Draw the image with specific size
+        """
         if(self.img != None):
             g.drawImage(self.img, 0, 0, 300, 300, self)
 

@@ -2,17 +2,17 @@ import unittest
 import sys
 import os.path
 
-sys.path.append("../../")
-from main.modules.image_modules.imageFile import ImageFile
-from main.modules.searcher_module.search_by_name import SearchDuplicatesByName
-from main.modules.list_images_module.list_images import ListImages
+sys.path.append("../../../")
+from src.modules.image_modules.imageFile import ImageFile
+from src.modules.searcher_module.search_by_name import SearchDuplicatesByName
+from src.modules.list_images_module.list_images import ListImages
 from tests.test_modules.comparison_tools import *
 
 class TestSearchByName(unittest.TestCase):
 	
 	def setUp(self):
-		self.test_path = os.getcwd()
-		self.search_by_name = SearchDuplicatesByName()
+		self.test_path = os.getcwd() 
+                self.search_by_name = SearchDuplicatesByName()
 		self.list_images = ListImages()
 		self.message = ""
 
@@ -66,4 +66,6 @@ class TestSearchByName(unittest.TestCase):
 		
 		list_of_images_dupes_by_name = self.search_by_name.search_duplicates(list_of_images_obtained)
 		self.search_by_name.show_path_of_duplicated_images()
-	
+
+if __name__ == "__main__":
+    unittest.main()

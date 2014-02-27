@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-sys.path.append("../../../")
+sys.path.append("../../../src/")
 
 from modules.logger_module.logger import Logger
 

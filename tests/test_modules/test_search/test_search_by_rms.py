@@ -1,12 +1,13 @@
+import os
 import unittest
 import sys
 import os.path
 
+sys.path.append("../../../")
 
-sys.path.append("../../")
-from main.modules.image_modules.imageFile import ImageFile
-from main.modules.searcher_module.search_by_rms import SearchDuplicatesByRMS
-from main.modules.list_images_module.list_images import ListImages
+from src.modules.image_modules.imageFile import ImageFile
+from src.modules.searcher_module.search_by_rms import SearchDuplicatesByRMS
+from src.modules.list_images_module.list_images import ListImages
 from tests.test_modules.comparison_tools import *
 
 class TestSearchByRMS(unittest.TestCase):
@@ -27,8 +28,7 @@ class TestSearchByRMS(unittest.TestCase):
 								(size_of_list_of_folders, list_of_images, self.list_of_directories)
 		
 		list_of_images_dupes_by_name = self.search_by_rms.search_duplicates(list_of_images_obtained)
-		print "The len ",len(list_of_images_obtained)
-		print "The len", len(list_of_images_obtained)
+		
 		res = are_items_equal(list_of_images_duplicates_expected, list_of_images_dupes_by_name)
 		self.assertTrue(res[0], res[1])
 	
@@ -43,4 +43,6 @@ class TestSearchByRMS(unittest.TestCase):
 		
 		list_of_images_dupes_by_name = self.search_by_rms.search_duplicates(list_of_images_obtained)
 		self.search_by_rms.show_path_of_duplicated_images()
-	
+
+if __name__ == "__main__":
+    unittest.main()

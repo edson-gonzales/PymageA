@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append("../../../")
+sys.path.append("../../../src/")
 from modules.logger_module.logger import Logger
 
 class GeneralSearch():
@@ -9,7 +9,7 @@ class GeneralSearch():
 		""" Initialize the GeneralSearch with an empty list of duplicates by default
 		"""
 		self.list_of_duplicates = []
-                logger_file = Logger()
+                self.logger_file = Logger()
 		
 	def search_duplicates(self, list_of_images_to_look_for):
 		"""Search duplicated images by the comparison method implemented and return all the equal 
@@ -35,7 +35,7 @@ class GeneralSearch():
                 except:
                 	exception_type = str(sys.exc_info()[0])
                 	message_exception= str(sys.exc_info()[1])
-                	self.test_logger.set_exception(exception_type,message_exception)
+                	self.logger_file.set_exception(exception_type,message_exception)
                     
 		return self.list_of_duplicates	
 	
