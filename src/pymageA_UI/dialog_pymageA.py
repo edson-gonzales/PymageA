@@ -20,6 +20,9 @@ from java.awt import GridBagConstraints
 from modules.image_modules.imageFile import ImageFile
 
 class Panel_modifyImage:
+    """
+    class  where the options for rotate,resize and convert the images will be executed
+    """
     _spacer_components = Dimension(2, 2)
     _spacer_panels = Dimension(5, 5)
     def __init__(self, image_details, jframe):
@@ -56,9 +59,7 @@ class Panel_modifyImage:
         center_panel = JPanel()
         
         center_panel.setLayout(BoxLayout(center_panel, BoxLayout.Y_AXIS))
-        center_panel.add(Box.createRigidArea(self._spacer_components))
-        #JPanel Resize image
-        
+        center_panel.add(Box.createRigidArea(self._spacer_components))    
         self.resize_option(center_panel)
         self.group_radio.add(self.radio_resize)
         self.rotate_option(center_panel)
@@ -68,6 +69,9 @@ class Panel_modifyImage:
         self.frame_details.getContentPane().add(center_panel,BorderLayout.CENTER)
 
     def south_panel_options(self):
+        """
+        Show the buttons Ok and Cancel
+        """
         south_panel = JPanel()
         south_panel.setLayout(BoxLayout(south_panel, BoxLayout.X_AXIS))
         south_panel.add(Box.createRigidArea(self._spacer_components))
@@ -77,11 +81,13 @@ class Panel_modifyImage:
         self.frame_details.getContentPane().add(south_panel,BorderLayout.SOUTH)
 
     def resize_option(self, center_panel):
+        """
+        Display the information required for resize an image in the JPanel
+        """
         for number in range (9999):
             self.height_pixels.addItem(str(number+1))
             self.width_pixels.addItem(str(number+1))
-        resize_panel = JPanel()
-       
+        resize_panel = JPanel()       
         resize_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Resize Image"))
         resize_panel.setLayout(GridBagLayout())
         cConstraints = GridBagConstraints()
@@ -109,6 +115,9 @@ class Panel_modifyImage:
         center_panel.add(resize_panel)
 
     def rotate_option(self, center_panel):
+        """
+        Display the information required for rotate an image in the JPanel
+        """
         for number in range (359):
             self.angle_image.addItem(str(number+1))
         rotate_panel = JPanel()
@@ -132,7 +141,7 @@ class Panel_modifyImage:
 
     def convert_option(self,center_panel):
         """
-         Show the options to JPanel Convert Image
+         Display the information required for convert an image in the JPanel
         """
         self.group_formats = ButtonGroup()
         self.format_jpg = JRadioButton("jpg")
@@ -200,11 +209,16 @@ class Panel_modifyImage:
             self.frame_details.dispose()
         
     def cancel_button_clicked(self, event):
+        """
+        if not action is required in modify action, we can close the window with cancel button
+        """
         self.jframe.setEnabled(True)
         self.frame_details.dispose()
 
     def update_values(self):
-        #print "siy ahwig and wirfu,",self.image_details.get_file_size_high(), "eeeww",self.image_details.get_file_size_width()
+        """
+        get the height and wifth an update the values of the image
+        """
         self.height_pixels.setSelectedItem(str(self.image_details.get_file_size_high()))
         self.width_pixels.setSelectedItem(str(self.image_details.get_file_size_width()))
         

@@ -4,11 +4,12 @@ from java.awt.image import *
 from java.io import *
 from java.lang.Math import *
 import sys
-sys.path.append("../../../src/")
-from  modules.logger_module.logger import  Logger
+
+sys.path.append("../../../")
+#from  modules.logger_module.logger import  Logger
 
 class ManagerImage:
-    logger_file = Logger()
+    #logger_file = Logger()
 
     def resize_image(self,input_file, width, height,type_image):
         """ Modify image with new sizes in pixels 
@@ -35,13 +36,21 @@ class ManagerImage:
         img_graphics.drawImage(resized_img, 0, 0, None)
 
         # Dispose the Graphics object, we no longer need it
-        img_graphics.dispose()
+        
 
         # The first argument is the resized image object
         # The second argument is the image file type, So i got the extension of the output file and passed it
-        # The next argument is the FileOutputStream to where the resized image is to be written.
-        ImageIO.write(buffered_image_type_image, type_image , FileOutputStream(output_file))
-        self.logger_file.set_info("The image" + input_file + " was resized.")
+        # The next argument is the FileOutputStream to where the resized image is to be written.        
+        if(type_image.lower() == (".jpg").lower()):
+            format = "jpg"
+        if(type_image.lower() == (".bmp").lower()):
+            format = "bmp"
+        if(type_image.lower() == (".png").lower()):
+            format = "png"
+        output_file_stream =FileOutputStream(input_file)
+        ImageIO.write(buffered_image_type, format  , output_file_stream)
+        output_file_stream.close()        
+        #self.logger_file.set_info("The image was resized.")
 
 
     def rotate_image(self, input_file, angle, type_image):
@@ -69,8 +78,16 @@ class ManagerImage:
         # The first argument is the resized image object
         # The second argument is the image file type, So i got the extension of the output file and passed it
         # The next argument is the FileOutputStream to where the resized image is to be written.
-        ImageIO.write(image_to_rotate, type_image, FileOutputStream(input_file))
-        self.logger_file.set_info("The image" + input_file + " was rotated")
+        if(type_image.lower() == (".jpg").lower()):
+            format = "jpg"
+        if(type_image.lower() == (".bmp").lower()):
+            format = "bmp"
+        if(type_image.lower() == (".png").lower()):
+            format = "png"
+        output_file_stream =FileOutputStream(input_file)
+        ImageIO.write(new_image, format, output_file_stream)
+        output_file_stream.close()
+        #self.logger_file.set_info("The image" + input_file + " was rotated")
 
 
     def size_width(self, input_file):
