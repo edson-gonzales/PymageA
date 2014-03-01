@@ -152,7 +152,8 @@ class ListImages():
 		list_of_directories -- The list of directories. This will be the same on all runs
 		
 		Returned values:
-		list_of_duplicated_images -- The list of images duplicated
+		list_of_duplicated_images -- If the len of the resultant array of Image objects it not zero
+								it will return the list of images, other wise it will return False
 		
 		"""
 	
@@ -161,5 +162,9 @@ class ListImages():
 		searcher = Searcher(search_type);
 		list_of_duplicated_images = searcher.search_duplicates(list_of_images_from_path);
                 self.logger_file.set_info("list of duplicated obtained wihtout problem")
-		return list_of_duplicated_images;
+		
+		if len(list_of_duplicated_images) == 0:
+			return False
+		else:
+			return list_of_duplicated_images;
 		

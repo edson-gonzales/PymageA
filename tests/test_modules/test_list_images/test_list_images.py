@@ -123,5 +123,19 @@ class TestListImages(unittest.TestCase):
 		result_and_message = are_items_equal(duplicated_images, list_of_images_to_look_for)
 		self.assertTrue(result_and_message[0], result_and_message[1])
 
+	def test_search_returns_false_when_there_is_no_duplicates(self):
+		list_of_images = []
+		self.test_path = self.test_path + "/images_for_unittest"
+		self.list_of_directories = self.list_images.get_all_nested_directories(self.test_path)
+		size_of_list_of_folders = len(self.list_of_directories)
+		search_type = SearchDuplicatesBySize()
+		
+		list_of_images_to_look_for = self.list_images.search_images_in_path \
+									(self.test_path, search_type, size_of_list_of_folders, \
+									list_of_images, self.list_of_directories) 
+		
+		self.assertFalse(list_of_images_to_look_for)
+		
+
 if __name__ == "__main__":
     unittest.main()
