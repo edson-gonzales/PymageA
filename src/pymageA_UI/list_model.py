@@ -20,18 +20,3 @@ class GeneratedListModel (AbstractListModel):
     def update(self):
         self.fireContentsChanged(self, 0,self.getSize())
 
-class ImageRenderer (ListCellRenderer):
-    """
-    Displays the image in the south pane.
-    """
-    def getListCellRendererComponent(self, list,image_found,index, isSelected, cellHasFocus):
-
-        ListCellRenderer.__getListCellRendererComponent__(list,image_found,index, isSelected, cellHasFocus)
-        position = image_found.get_file_name()
-        print"icon sere ",image_found.get_file_name()
-        #imageIcon = ImageIcon(getClass().getResource(image_found.get_full_path_with_name_image_type()))
-        imageIcon = createImageIcon(image_found.get_file_name(),"")
-        setIcon(imageIcon);
-        setText(image_found.get_full_path_with_name_image_type())
-        return self
-

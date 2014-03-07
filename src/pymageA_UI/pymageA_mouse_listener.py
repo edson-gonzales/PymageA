@@ -15,12 +15,12 @@ from java.awt import Image
 from java.io import *
 from javax.imageio import *
 from java.awt.image import *
-from java.awt import Canvas
 from java.awt import Toolkit
 from javax.swing import ImageIcon
 from image_pymageUI import ScaledImageLabel
 from java.awt.event import ActionListener
-from dialog_pymageA import Panel_modifyImage
+from modify_image import ModifyImage
+from show_image import ShowImage
 
 class JListMouseListener(ListSelectionListener):
     """
@@ -36,8 +36,8 @@ class JListMouseListener(ListSelectionListener):
         self.list_images = list_images
         self.jbutton = jbutton
         self.jpanel_south = jpanel_south
-        self.canvas1 = MyCanvas(None)
-        self.canvas1.setSize(300,300);
+        self.show_image = ShowImage(None)
+        self.show_image.setSize(300,300);
            
     def updateList(self,list_images):
         """
@@ -69,7 +69,6 @@ class JListMouseListener(ListSelectionListener):
         """
         Show the details of the image selected in the JList in the south pane
         """
-
         details_image_text_panel = JPanel()
         details_image_text_panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Details Image"))
         details_image_text_panel.setLayout(GridBagLayout())        
@@ -77,7 +76,19 @@ class JListMouseListener(ListSelectionListener):
         cConstraints.anchor = GridBagConstraints.WEST
         cConstraints.weightx = 0.1
         cConstraints.weighty = 0.1
-        cConstraints.fill = GridBagConstraints.NONE
+        self.details_image(details_image_text_panel,cConstraints,image_selected)
+        self.jpanel.add(details_image_text_panel)
+        image_panel = JPanel()
+        image_panel.setLayout(BoxLayout( image_panel, BoxLayout.Y_AXIS))
+        image_panel.add(Box.createRigidArea(self._spacer_panels))
+        image_panel.add(self.show_image);
+        toolkit = Toolkit.getDefaultToolkit()
+        image1 = toolkit.getImage(image_selected.get_full_path_with_name_image_type() )
+        self.show_image.setImage(image1)
+        self.show_image.repaint()
+        self.jpanel.add(image_panel)
+
+    def details_image(self, details_image_text_panel,cConstraints,image_selected):
         cConstraints.gridx = 0
 	cConstraints.gridy = 0
         details_image_text_panel.add(JLabel("Name"),cConstraints)
@@ -85,57 +96,36 @@ class JListMouseListener(ListSelectionListener):
         cConstraints.gridx = 1
 	cConstraints.gridy = 0
         details_image_text_panel.add(JLabel(image_selected.get_complete_image_with_type()),cConstraints)
-        #cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 1
         details_image_text_panel.add(JLabel("Directory"),cConstraints)
-        #cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 1
         details_image_text_panel.add(JLabel(image_selected.get_file_path()),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 2
         details_image_text_panel.add(JLabel("Owner"),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 2
         details_image_text_panel.add(JLabel(image_selected.get_file_owner()),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 3
         details_image_text_panel.add(JLabel("Width(Pixels)"),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 3
         details_image_text_panel.add(JLabel(str(image_selected.get_file_size_width())),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 4
         details_image_text_panel.add(JLabel("Height(Pixels)"),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 4
         details_image_text_panel.add(JLabel(str(image_selected.get_file_size_high())),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 0
 	cConstraints.gridy = 5
         details_image_text_panel.add(JLabel("Size KB"),cConstraints)
-        cConstraints.fill = GridBagConstraints.NONE
         cConstraints.gridx = 1
 	cConstraints.gridy = 5
         details_image_text_panel.add(JLabel(str(image_selected.get_size_KB_image())),cConstraints)
-        self.jpanel.add(details_image_text_panel)
-        image_panel = JPanel()
-        image_panel.setLayout(BoxLayout( image_panel, BoxLayout.Y_AXIS))
-        image_panel.add(Box.createRigidArea(self._spacer_panels))
-        image_panel.add(self.canvas1);
-        toolkit = Toolkit.getDefaultToolkit()
-        image1 = toolkit.getImage(image_selected.get_full_path_with_name_image_type() )
-        self.canvas1.setImage(image1)
-        self.canvas1.repaint()
-        self.jpanel.add(image_panel)
-        
         
 class ModifyImageButtonListener (ActionListener):
     """
@@ -163,26 +153,6 @@ class ModifyImageButtonListener (ActionListener):
         selections = self.jlist.getSelectedIndex()
         image_selected = ImageFile()
         image_selected = self.list_images[selections]
-        modify_image_panel = Panel_modifyImage(image_selected,self.jframe)
-
-class MyCanvas (Canvas):
-    """
-    Class to display the image selected in JList, it is displaye in south pane
-    """
-    def MyCanvas(self, img):
-        """
-        Construnctor of class
-        """
-        Canvas.__init__(self)
-        self.img = img
-    def paint (self, g):
-        """
-        Draw the image with specific size
-        """
-        if(self.img != None):
-            g.drawImage(self.img, 0, 0, 300, 300, self)
-
-    def setImage (self, img):
-        self.img = img
+        modify_image_panel = ModifyImage(image_selected,self.jframe)
 
 

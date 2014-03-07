@@ -9,8 +9,7 @@ class ScaledImageLabel(JLabel):
     def __init__(self):
         JLabel.__init__(self)
 
-    def paintComponent(self,g):
-        #icon = ImageIcon()
+    def paintComponent(self,g):        
         icon = self.getIcon();
         if (icon != None):
             ManagerImage.drawScaledImage(icon.getImage(),self, g)# To change this template, choose Tools | Templates
