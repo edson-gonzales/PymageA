@@ -146,7 +146,13 @@ class Panel_pymageA(JPanel):
 								(size_of_list_of_folders, lista, list_of_directories)                      
            if self.list_images_found == False or len (self.list_images_found) == 0:
                 JOptionPane.showMessageDialog(None,"None image was found")
+                self.list_image.clearSelection()
+                self.list_image_model.removeAllElements()
+                self.south_panel.hide()
            else:
+                self.south_panel.revalidate()
+
+                self.south_panel.show()
                 self.listener_mouse.updateList(self.list_images_found)
                 self.listener_mouse_button_modify.updateList(self.list_images_found)
                 for pos in range(len(self.list_images_found)):
@@ -173,12 +179,16 @@ class Panel_pymageA(JPanel):
 									(self._path.getText(), search_type, size_of_list_of_folders, \
 									list_of_images, list_of_directories)            
             if self.list_images_found == False:
-                JOptionPane.showMessageDialog(None,"None image was found")
+                JOptionPane.showMessageDialog(None,"No duplicates  by size image")
+                self.list_image_model.removeAllElements()
+                self.south_panel.hide()
             else:
                 self.listener_mouse.updateList(self.list_images_found)
                 self.listener_mouse_button_modify.updateList(self.list_images_found)
                 for pos in range(len(self.list_images_found)):
                     self.list_image_model.addElement(str(self.list_images_found [pos]))
+                self.south_panel.revalidate()
+                self.south_panel.show()
         else:
             JOptionPane.showMessageDialog(None,"Select a path to start the search for image files","Incorect Path", JOptionPane.ERROR_MESSAGE )
 
@@ -201,12 +211,16 @@ class Panel_pymageA(JPanel):
 									list_of_images, list_of_directories)
             
             if self.list_images_found == False:
-			    JOptionPane.showMessageDialog(None,"None image was found")
+		JOptionPane.showMessageDialog(None,"No duplicates  by name image")
+                self.list_image_model.removeAllElements()
+                self.south_panel.hide()
             else:
                 self.listener_mouse.updateList(self.list_images_found)
                 self.listener_mouse_button_modify.updateList(self.list_images_found)
                 for pos in range(len(self.list_images_found)):
                     self.list_image_model.addElement(str(self.list_images_found [pos]))
+                self.south_panel.revalidate()
+                self.south_panel.show()
         else:
             JOptionPane.showMessageDialog(None,"Select a path to start the search for image files","Incorect Path", JOptionPane.ERROR_MESSAGE )
                 
@@ -228,12 +242,16 @@ class Panel_pymageA(JPanel):
 									(self._path.getText(), search_by_rms, size_of_list_of_folders, \
 									list_of_images, list_of_directories)            
             if self.list_images_found == False:
-                JOptionPane.showMessageDialog(None,"None image was found")
+                JOptionPane.showMessageDialog(None,"No duplicates  by ' root mean square' method ")
+                self.list_image_model.removeAllElements()
+                self.south_panel.hide()
             else:
                 self.listener_mouse.updateList(self.list_images_found)
                 self.listener_mouse_button_modify.updateList(self.list_images_found)
                 for pos in range(len(self.list_images_found)):
                     self.list_image_model.addElement(str(self.list_images_found [pos]))
+                self.south_panel.revalidate()
+                self.south_panel.show()
         else:
             JOptionPane.showMessageDialog(None,"Select a path to start the search for image files","Incorect Path", JOptionPane.ERROR_MESSAGE )
             
@@ -267,7 +285,9 @@ class Panel_pymageA(JPanel):
         #self.list_image.setCellRenderer(ImageRenderer())
         self.list_image.setModel(self.list_image_model)
         self.list_image.setVisibleRowCount(17)
-        self.list_image.addListSelectionListener(self.listener_mouse)
+        #self.list_image.addListSelectionListener(self.listener_mouse)
+        listSelectionModel = self.list_image.getSelectionModel()
+        listSelectionModel.addListSelectionListener(self.listener_mouse)
         scroll_pane =  JScrollPane(self.list_image)
         #scroll_pane.setPreferredSize(Dimension(10, int(self.dimensions_frame.getWidth())))
         center_panel.add(scroll_pane)

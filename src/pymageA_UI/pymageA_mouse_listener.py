@@ -49,19 +49,21 @@ class JListMouseListener(ListSelectionListener):
         """
         When value in Jlist is changed diferents actions are performed to display
         the details of image selected
-        """
+        """        
         model = self.jlist.getModel()
-        if(model.getSize() != 0):
-            self.jbutton.setEnabled(True)
-        selections = self.jlist.getSelectedIndex()
-        selec = model.getElementAt(selections)
-        image_selected = ImageFile()
-        image_selected = self.list_images[selections]
-        element_image = self.jlist.getSelectedValues()
-        self.jpanel.removeAll()
-        self.jpanel.repaint()
-        self.show_details_image(image_selected)
-        self.jpanel.revalidate()
+        isAdjusting = event.getValueIsAdjusting()        
+        if isAdjusting == True:
+            if(model.getSize() != 0):
+                self.jbutton.setEnabled(True)
+            selections = self.jlist.getSelectedIndex()
+            selec = model.getElementAt(selections)
+            image_selected = ImageFile()
+            image_selected = self.list_images[selections]
+            element_image = self.jlist.getSelectedValues()
+            self.jpanel.removeAll()
+            self.jpanel.repaint()
+            self.show_details_image(image_selected)
+            self.jpanel.revalidate()
         
         
 
