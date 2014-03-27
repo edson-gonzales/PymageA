@@ -4,7 +4,7 @@ from java.awt.image import *
 from java.io import *
 from java.lang.Math import *
 import sys
-sys.path.append("../../../")
+sys.path.append("../../../src/")
 from  modules.logger_module.logger import  Logger
 
 class ManagerImage:
